@@ -30,7 +30,10 @@ public class ControllerImpl implements Controller {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         if (textMessage.split(" ")[0].equals("/recipes")){
-            sendMessage.setText("Это рецепты!");
+            RecipeController recipeController = new RecipeController(textMessage);
+            sendMessage.setText(recipeController.getText());
+            sendMessage.setReplyMarkup(recipeController.getMarkup());
+
         }
         else {
             sendMessage.setText(sendText());
@@ -43,7 +46,7 @@ public class ControllerImpl implements Controller {
     private String sendText(){
         StringBuilder builder = new StringBuilder();
         String footer = "\n/help - помощь\n" +
-                "/recipes - рецепты(Не работает)";
+                "/recipes - рецепты";
         switch (textMessage){
             case "/start":
                 builder.append("Добро пожаловать в Home113\n" +
