@@ -25,7 +25,7 @@ public class WorkWithDB {
     public static List<Recipe> findAll(int category) {
         String sql;
         if (category == 0) sql = "SELECT * FROM recipes;";
-        else sql = "SELECT * FROM recipes WHERE category = " + category + ";";
+        else sql = "SELECT * FROM recipes WHERE category = " + category + " ORDER BY id DESC;";
         List<Recipe> list = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             ResultSet resultSet = connection.createStatement().executeQuery(sql);

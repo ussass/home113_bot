@@ -24,13 +24,13 @@ public class Main {
 
         JPanel panel = new JPanel();
 
-        JButton StartButton = new JButton("Start");
+        JButton startButton = new JButton("Start");
         JButton exitButton = new JButton("Exit");
 
         final JLabel label = new JLabel("Bot is not running         ");
 
 
-        StartButton.addActionListener(new ActionListener()
+        startButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -41,6 +41,7 @@ public class Main {
                 }
             }
         });
+        startButton.setFocusable(true);
 
         exitButton.addActionListener(new ActionListener()
         {
@@ -53,7 +54,7 @@ public class Main {
 
 
 
-        panel.add(StartButton);
+        panel.add(startButton);
         panel.add(label);
         panel.add(exitButton);
 
