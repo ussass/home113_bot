@@ -5,7 +5,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import ru.trofimov.keyboard.MyInlineKeyboard;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ControllerImpl implements Controller {
@@ -39,6 +41,18 @@ public class ControllerImpl implements Controller {
             sendMessage.setText(sendText());
             sendMessage.setReplyMarkup(MyInlineKeyboard.simpleButton());
         }
+
+        Date date = new Date();
+
+        String sec = date.getSeconds() < 10 ? "0" + date.getSeconds() : "" + date.getSeconds();
+        String min = date.getMinutes() < 10 ? "0" + date.getMinutes() : "" + date.getMinutes();
+
+        String builder = String.valueOf("[" +
+                date.getHours()) + ':' +
+                min + ':' +
+                sec + "] " +
+                chatId + ": " + textMessage;
+        System.out.println(builder);
 
         return sendMessage;
     }
