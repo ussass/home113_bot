@@ -3,7 +3,6 @@ package ru.trofimov.Bot;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
@@ -15,7 +14,7 @@ public class Bot extends TelegramLongPollingBot {
 
     private boolean isAnswerPrepared = false;
 
-    public static boolean startBot(){
+    public static boolean startBot() {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
@@ -31,77 +30,26 @@ public class Bot extends TelegramLongPollingBot {
 
         Controller controller = new ControllerImpl();
 
-        if(update.hasMessage()){
-            if(update.getMessage().hasText()) {
+        if (update.hasMessage()) {
+            if (update.getMessage().hasText()) {
                 controller.setChatId(update.getMessage().getChatId());
                 controller.setTextMessage(update.getMessage().getText());
                 isAnswerPrepared = true;
             }
-        }
-        else if(update.hasCallbackQuery()){
+        } else if (update.hasCallbackQuery()) {
             controller.setChatId(update.getCallbackQuery().getMessage().getChatId());
             controller.setTextMessage(update.getCallbackQuery().getData());
             isAnswerPrepared = true;
         }
 
-        if (isAnswerPrepared){
+        if (isAnswerPrepared) {
             try {
                 execute(controller.getSendMessage());
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
         }
-
-
-
-
-
-//        if(update.hasMessage()){
-//            if(update.getMessage().hasText()){
-//                ProcessingRequest request = new SimpleProcessingRequest();
-//                request.setMessage(update.getMessage());
-//
-//                try {
-//                    execute(request.getSendMassage());
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }else if(update.hasCallbackQuery()){
-//            System.out.println("update.getCallbackQuery().getData() = " + update.getCallbackQuery().getData());
-//            SendMessage sendMessage = new SendMessage();
-//            sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId());
-//            sendMessage.setText("123!!!");
-//
-//            switch (update.getCallbackQuery().getData()){
-//                case "/recipe":
-//                    System.out.println("Recipe!!!");
-//                    break;
-//                default:
-////                    System.out.println("update.getCallbackQuery() = " + update.getCallbackQuery().getInlineMessageId());
-//                    System.out.println("update.getCallbackQuery().getMessage().getChatId() = " + update.getCallbackQuery().getMessage().getChatId());
-//                    sendMessage.setText("Доступны следующие команды:\n" +
-//                            "\n/help - помощь" +
-//                            "\n/recipes - рецепты(Не работает)");
-//                    sendMessage.setReplyMarkup(MyInlineKeyboard.simpleButton());
-//
-//
-//
-//            }
-
-
-//            try {
-//                execute(new SendMessage().setText(
-//                        update.getCallbackQuery().getData())
-//                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
-////                execute(sendMessage);
-//            } catch (TelegramApiException e) {
-//                e.printStackTrace();
-//            }
-        }
-
-//    }
+    }
 
     public String getBotUsername() {
         return BotParameters.getBotUsername();
@@ -110,6 +58,5 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotToken() {
         return BotParameters.getBotToken();
     }
-
 
 }

@@ -1,6 +1,7 @@
 package ru.trofimov;
 
 import ru.trofimov.Bot.Bot;
+import ru.trofimov.arduino.WaterControl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Main {
-    public static void run()
+    private static void run()
     {
         final JFrame window = new JFrame("Caption");
 
@@ -29,27 +30,22 @@ public class Main {
 
         final JLabel label = new JLabel("Bot is not running         ");
 
+        WaterControl waterControl = new WaterControl();
+        final Thread thread = new Thread(waterControl);
 
-        startButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                if (Bot.startBot()) {
-                    label.setText("Bot is working               ");
-                } else {
-                    label.setText("An error has occurred");
-                }
+        startButton.addActionListener(e -> {
+            thread.start();
+            if (Bot.startBot()) {
+                label.setText("Bot is working               ");
+            } else {
+                label.setText("An error has occurred");
             }
         });
         startButton.setFocusable(true);
 
-        exitButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                window.setVisible(false);
-                System.exit(0);
-            }
+        exitButton.addActionListener(e -> {
+            window.setVisible(false);
+            System.exit(0);
         });
 
 
