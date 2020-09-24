@@ -2,13 +2,17 @@ package ru.trofimov;
 
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterControl;
+import ru.trofimov.arduino.WaterPerDay;
+import ru.trofimov.model.WorkWithDB;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Main {
     private static void run()
@@ -67,32 +71,17 @@ public class Main {
 
     public static void main(String[] args)
     {
-        run();
-//        Date date = new Date();
-//        long ms = date.getTime();
-//        ms = ms - 1600000000000L;
-//        int min = (int) ms/6000;
-//        System.out.println(ms);
-//        System.out.println(min);
-//        System.out.println((Integer.MAX_VALUE - min)/60/24/365);
-//        System.out.println(Integer.MAX_VALUE);
-//        System.out.println(Long.MAX_VALUE);
-//
-//        System.out.println("date.getTime() = " + date.getTime());
-//        System.out.println("date.getYear() = " + date.getYear());
-//        System.out.println("date.getMonth() = " + date.getMonth());
-//        System.out.println("date.getDate() = " + date.getDate());
-//        System.out.println("date.getHours() = " + date.getHours());
-//        System.out.println("date.getMinutes() = " + date.getMinutes());
-//
-//        Date date1 = new Date(120,8,23);
-//        System.out.println(date.getTime() - date1.getTime());
-//        System.out.println("date1.getTime() = " + date1.getTime());
-//        System.out.println("date1.getYear() = " + date1.getYear());
-//        System.out.println("date1.getMonth() = " + date1.getMonth());
-//        System.out.println("date1.getDate() = " + date1.getDate());
-//        System.out.println("date1.getHours() = " + date1.getHours());
-//        System.out.println("date1.getMinutes() = " + date1.getMinutes());
+//        run();
+        List<WaterPerDay> list = WorkWithDB.findAllWater();
+        WaterPerDay water = list.get(1);
+        List<Integer> hotWater = water.getHotWater();
+        List<Integer> coldWater = water.getColdWater();
+        for (int i = 0; i <water.getColdWater().size(); i ++){
+            System.out.println(i + ": " + water.getHotWater().get(i) + " " + water.getColdWater().get(i));
+        }
+        System.out.println("Tatal: " + water.getHotWaterTotal() + " " + water.getColdWaterTotal());
+        System.out.println("water.getDate() = " + water.getDate());
+
 
     }
 }

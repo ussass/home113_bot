@@ -1,12 +1,12 @@
 package ru.trofimov.model;
 
+import ru.trofimov.arduino.WaterPerDay;
 import ru.trofimov.entity.Recipe;
 import ru.trofimov.parameters.DBParameters;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class WorkWithDB {
@@ -97,29 +97,58 @@ public class WorkWithDB {
         }
     }
 
-    public static int saveWater(int hotWater, int coldWater, Date date) {
-        int lastId = 0;
+    public static void saveWater(int hotWater, int coldWater, int date) {
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             Statement statement = connection.createStatement();
-            statement.execute("INSERT INTO watermeterreadings (date, hot1, hot2, hot3, hot4, hot5, hot6, hot7, hot8, hot9, hot10, hot11, hot12, hot13, hot14, hot15, hot16, hot17, hot18, hot19, hot20, hot21, hot22, hot23, hot24, cold1, cold2, cold3, cold4, cold5, cold6, cold7, cold8, cold9, cold10, cold11, cold12, cold13, cold14, cold15, cold16, cold17, cold18, cold19, cold20, cold21, cold22, cold23, cold24) " +
-                    "VALUES(" + date.getTime() + ", " + hotWater + ",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0," + coldWater + ",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);");
-            ResultSet resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
+            statement.execute("INSERT INTO watermeterreadings (date, hot1, hot2, hot3, hot4, hot5, hot6, hot7, hot8, hot9, hot10, hot11, hot12, hot13, hot14, hot15, hot16, hot17, hot18, hot19, hot20, hot21, hot22, hot23, hot0, cold1, cold2, cold3, cold4, cold5, cold6, cold7, cold8, cold9, cold10, cold11, cold12, cold13, cold14, cold15, cold16, cold17, cold18, cold19, cold20, cold21, cold22, cold23, cold0) " +
+                    "VALUES(" + date + ", " + hotWater + ",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0," + coldWater + ",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);");
+        } catch (SQLException e) {
+            System.out.println("Неудалось загрузить класс драйвера!");
+        }
+    }
+
+    public static void updateWater(int myDate, int hotWater, int coldWater, int hour) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            Statement statement = connection.createStatement();
+            statement.execute("UPDATE watermeterreadings SET hot" + hour +" = " + hotWater + ", cold" + hour +" = " + coldWater + " WHERE date " + myDate + ";");
+        } catch (SQLException e) {
+            System.out.println("Неудалось загрузить класс драйвера!");
+        }
+    }
+
+//    public static int lastDateWater(Recipe recipe) {
+//        int lastId = 0;
+//        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+//            Statement statement = connection.createStatement();
+//            statement.execute("INSERT INTO recipes (recipeName, category, portion, cookingTime, ingredients, steps, photos) " + recipe.insertIntoDb(true));
+//            ResultSet resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
+//            while (resultSet.next()) {
+//                lastId = resultSet.getInt(1);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Неудалось загрузить класс драйвера!");
+//        }
+//        return lastId;
+//    }
+
+    public static List<WaterPerDay> findAllWater() {
+        List<WaterPerDay> list = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM watermeterreadings;");
             while (resultSet.next()) {
-                lastId = resultSet.getInt(1);
+                List<Integer> hotWater = new ArrayList<>(24);
+                List<Integer> coldWater = new ArrayList<>(24);
+                for (int i = 0; i < 24; i ++){
+                    hotWater.add(resultSet.getInt("hot" + i));
+                    coldWater.add(resultSet.getInt("cold" + i));
+                }
+                WaterPerDay water = new WaterPerDay(resultSet.getInt("date"), hotWater, coldWater);
+                list.add(water);
             }
         } catch (SQLException e) {
             System.out.println("Неудалось загрузить класс драйвера!");
         }
-        return lastId;
-    }
-
-    public static void updateWater(int id, int hotWater, int coldWater, int hour) {
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
-            Statement statement = connection.createStatement();
-            statement.execute("UPDATE watermeterreadings SET hot" + hour +" = " + hotWater + ", cold" + hour +" = " + coldWater + " WHERE id = " + id + ";");
-        } catch (SQLException e) {
-            System.out.println("Неудалось загрузить класс драйвера!");
-        }
+        return list;
     }
 
 }
