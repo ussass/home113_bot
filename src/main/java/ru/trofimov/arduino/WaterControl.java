@@ -34,21 +34,24 @@ public class WaterControl implements Runnable {
     public void run() {
         int hour = -1;
         int myDate;
-        boolean isReadyCheck = false;
+//        boolean isTodayAdded  = false;
         while (true){
             Date date = new Date();
             if (date.getHours() != hour){
+//                if (date.getDate() == myDate % 100)
+//                    isTodayAdded = false;
                 myDate = date.getYear() % 100;
                 myDate = myDate * 100 + date.getMonth() + 1;
                 myDate = myDate * 100 + date.getDate();
                 hour = date.getHours();
                 toReadMeter();
-                if (date.getHours() == 1){
-                    WorkWithDB.saveWater(hotWater, coldWater, myDate);
-                    isReadyCheck = true;
+                int lastDay = WorkWithDB.lastDateWater();
+
+                if (lastDay != myDate){
+                    WorkWithDB.saveWater(hotWater, coldWater, myDate, date.getHours());
                 }
-                else if (isReadyCheck) {
-                    WorkWithDB.updateWater(myDate, hotWater, coldWater, date.getHours());
+                else {
+                    WorkWithDB.updateWater(lastDay, hotWater, coldWater, date.getHours());
                 }
                 System.out.println("Добавленно в час: " + hour);
             }

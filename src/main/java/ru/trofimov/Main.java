@@ -71,17 +71,6 @@ public class Main {
 
     public static void main(String[] args)
     {
-//        run();
-        List<WaterPerDay> list = WorkWithDB.findAllWater();
-        WaterPerDay water = list.get(1);
-        List<Integer> hotWater = water.getHotWater();
-        List<Integer> coldWater = water.getColdWater();
-        for (int i = 0; i <water.getColdWater().size(); i ++){
-            System.out.println(i + ": " + water.getHotWater().get(i) + " " + water.getColdWater().get(i));
-        }
-        System.out.println("Tatal: " + water.getHotWaterTotal() + " " + water.getColdWaterTotal());
-        System.out.println("water.getDate() = " + water.getDate());
-
-
+        run();
     }
 }
