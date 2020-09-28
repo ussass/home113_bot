@@ -5,7 +5,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import ru.trofimov.keyboard.MyInlineKeyboard;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +35,17 @@ public class ControllerImpl implements Controller {
             sendMessage.setText(recipeController.getText());
             sendMessage.setReplyMarkup(recipeController.getMarkup());
 
+        }
+        else if (textMessage.split(" ")[0].equals("/status")){
+//            String string = "      #\n";
+//            string += "   ##\n";
+//            string += "###\n";
+//            sendMessage.setText(string);
+//            sendMessage.setReplyMarkup(MyInlineKeyboard.simpleButton());
+
+            StatusController statusController = new StatusController(textMessage);
+            sendMessage.setText(statusController.getText());
+            sendMessage.setReplyMarkup(statusController.getResponseKeyboard());
         }
         else {
             sendMessage.setText(sendText());

@@ -2,17 +2,9 @@ package ru.trofimov;
 
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterControl;
-import ru.trofimov.arduino.WaterPerDay;
-import ru.trofimov.model.WorkWithDB;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class Main {
     private static void run()

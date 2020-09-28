@@ -24,8 +24,8 @@ public class MyInlineKeyboard {
         InlineKeyboardButton inlineKeyboardRow2Button2 = new InlineKeyboardButton();
         inlineKeyboardRow2Button1.setText("Рецепты");
         inlineKeyboardRow2Button1.setCallbackData("/recipes");
-        inlineKeyboardRow2Button2.setText("2");
-        inlineKeyboardRow2Button2.setCallbackData("2");
+        inlineKeyboardRow2Button2.setText("Статус");
+        inlineKeyboardRow2Button2.setCallbackData("/status");
 
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
         keyboardButtonsRow2.add(inlineKeyboardRow2Button1);
