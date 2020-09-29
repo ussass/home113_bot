@@ -1,12 +1,17 @@
 package ru.trofimov;
 
+import com.google.inject.internal.cglib.core.$ClassNameReader;
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterControl;
+import ru.trofimov.arduino.WaterPerDay;
 import ru.trofimov.model.DirtyJob;
+import ru.trofimov.model.WorkWithDB;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Main {
     private static void run()
@@ -68,20 +73,41 @@ public class Main {
 //        run();
 
 //        List<Integer> list = new ArrayList<>();
+        List<WaterPerDay> x = WorkWithDB.findAllWater();
+
+
+
+
+
         ArrayList<Integer> list = new ArrayList<>();
-        list.add(6);
-        list.add(2);
-        list.add(9);
-        list.add(4);
-        list.add(4);
-        list.add(7);
+//        ArrayList<WaterPerDay> list = (ArrayList<WaterPerDay>) WorkWithDB.findAllWater();
         list.add(1);
         list.add(2);
         list.add(3);
         list.add(4);
         list.add(5);
-        list.add(6);
-        String result = DirtyJob.ListGraph(list);
-        System.out.println(result);
+        list.add(1);
+        list.add(1);
+        list.add(5);
+        list.add(4);
+        list.add(3);
+        list.add(2);
+        list.add(1);
+//        Random random = new Random();
+//        int lastInt = 0;
+//        for (int i = 0; i < 125; i++){
+////            list.add(random.nextInt(10));
+//            int rand = random.nextInt(3);
+//            if (lastInt == 0) lastInt ++;
+//            else if (lastInt != 0 && lastInt != 20 && rand == 0) lastInt++;
+//            else if (lastInt != 0 && lastInt != 20 && rand == 1) lastInt = lastInt;
+//            else if (lastInt != 0 && lastInt != 20 && rand == 2) lastInt--;
+//            else lastInt--;
+//            list.add(lastInt);
+//        }
+        String result = DirtyJob.ListGraph(x.get(0).getHotWater(), true);
+        System.out.println();
+        String result1 = DirtyJob.ListGraph(x.get(0).getHotWater(), false);
+//        System.out.println(result);
     }
 }
