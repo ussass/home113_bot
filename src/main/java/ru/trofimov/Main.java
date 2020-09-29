@@ -2,9 +2,11 @@ package ru.trofimov;
 
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterControl;
+import ru.trofimov.model.DirtyJob;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Main {
     private static void run()
@@ -63,6 +65,23 @@ public class Main {
 
     public static void main(String[] args)
     {
-        run();
+//        run();
+
+//        List<Integer> list = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(6);
+        list.add(2);
+        list.add(9);
+        list.add(4);
+        list.add(4);
+        list.add(7);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        list.add(6);
+        String result = DirtyJob.ListGraph(list);
+        System.out.println(result);
     }
 }

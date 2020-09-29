@@ -37,12 +37,6 @@ public class ControllerImpl implements Controller {
 
         }
         else if (textMessage.split(" ")[0].equals("/status")){
-//            String string = "      #\n";
-//            string += "   ##\n";
-//            string += "###\n";
-//            sendMessage.setText(string);
-//            sendMessage.setReplyMarkup(MyInlineKeyboard.simpleButton());
-
             StatusController statusController = new StatusController(textMessage);
             sendMessage.setText(statusController.getText());
             sendMessage.setReplyMarkup(statusController.getResponseKeyboard());
@@ -108,13 +102,13 @@ public class ControllerImpl implements Controller {
         // Add the first row to the keyboard
         keyboard.add(row);
         // Create another keyboard row
-        row = new KeyboardRow();
-        // Set each button for the second line
-        row.add("Row 2 Button 1");
-        row.add("Row 2 Button 2");
-        row.add("Row 2 Button 3");
-        // Add the second row to the keyboard
-        keyboard.add(row);
+//        row = new KeyboardRow();
+//        // Set each button for the second line
+//        row.add("Row 2 Button 1");
+//        row.add("Row 2 Button 2");
+//        row.add("Row 2 Button 3");
+//        // Add the second row to the keyboard
+//        keyboard.add(row);
         // Set the keyboard to the markup
         keyboardMarkup.setKeyboard(keyboard);
         // Add it to the message

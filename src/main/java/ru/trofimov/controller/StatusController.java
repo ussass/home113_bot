@@ -2,6 +2,8 @@ package ru.trofimov.controller;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.trofimov.arduino.WaterPerDay;
+import ru.trofimov.model.WorkWithDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,21 @@ class StatusController {
             responseKeyboard = getCategoryMarkup();
             return;
         }
+
+        List<WaterPerDay> list = WorkWithDB.findAllWater();
+        WaterPerDay water = list.get(list.size()-1);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("Литры ");
+        for (int x : water.getColdWater())
+            builder.append(x).append(" ");
+        builder.append("\n");
+        builder.append("1    ");
+        for (int i = 0; i < 24; i++){
+            builder.append(i + 1).append(" ");
+        }
+        responseText = builder.toString();
+        responseKeyboard = getCategoryMarkup();
 
 
     }
