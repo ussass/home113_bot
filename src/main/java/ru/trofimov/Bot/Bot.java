@@ -13,6 +13,11 @@ import ru.trofimov.parameters.BotParameters;
 public class Bot extends TelegramLongPollingBot {
 
     private boolean isAnswerPrepared = false;
+    private static String prefix = "";
+
+    public static void setPrefix(String prefix) {
+        Bot.prefix = prefix;
+    }
 
     public static boolean startBot() {
         ApiContextInitializer.init();
@@ -33,7 +38,7 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             if (update.getMessage().hasText()) {
                 controller.setChatId(update.getMessage().getChatId());
-                controller.setTextMessage(update.getMessage().getText());
+                controller.setTextMessage(prefix + update.getMessage().getText());
                 isAnswerPrepared = true;
             }
         } else if (update.hasCallbackQuery()) {

@@ -35,11 +35,11 @@ public class Main {
 
         final JLabel label = new JLabel("Bot is not running         ");
 
-        WaterControl waterControl = new WaterControl("COM3");
-        final Thread thread = new Thread(waterControl);
+//        WaterControl waterControl = new WaterControl("COM3");
+//        final Thread thread = new Thread(waterControl);
 
         startButton.addActionListener(e -> {
-            thread.start();
+//            thread.start();
             if (Bot.startBot()) {
                 label.setText("Bot is working               ");
             } else {
@@ -70,44 +70,45 @@ public class Main {
 
     public static void main(String[] args)
     {
-//        run();
+        run();
 
 //        List<Integer> list = new ArrayList<>();
-        List<WaterPerDay> x = WorkWithDB.findAllWater();
 
 
 
 
 
-        ArrayList<Integer> list = new ArrayList<>();
-//        ArrayList<WaterPerDay> list = (ArrayList<WaterPerDay>) WorkWithDB.findAllWater();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.add(5);
-        list.add(1);
-        list.add(1);
-        list.add(5);
-        list.add(4);
-        list.add(3);
-        list.add(2);
-        list.add(1);
-//        Random random = new Random();
-//        int lastInt = 0;
-//        for (int i = 0; i < 125; i++){
-////            list.add(random.nextInt(10));
-//            int rand = random.nextInt(3);
-//            if (lastInt == 0) lastInt ++;
-//            else if (lastInt != 0 && lastInt != 20 && rand == 0) lastInt++;
-//            else if (lastInt != 0 && lastInt != 20 && rand == 1) lastInt = lastInt;
-//            else if (lastInt != 0 && lastInt != 20 && rand == 2) lastInt--;
-//            else lastInt--;
-//            list.add(lastInt);
-//        }
-        String result = DirtyJob.ListGraph(x.get(0).getHotWater(), true);
-        System.out.println();
-        String result1 = DirtyJob.ListGraph(x.get(0).getHotWater(), false);
-//        System.out.println(result);
+
+//        ArrayList<Integer> list = new ArrayList<>();
+////        ArrayList<WaterPerDay> list = (ArrayList<WaterPerDay>) WorkWithDB.findAllWater();
+//        list.add(1);
+//        list.add(2);
+//        list.add(3);
+//        list.add(4);
+//        list.add(5);
+//        list.add(1);
+//        list.add(1);
+//        list.add(5);
+//        list.add(4);
+//        list.add(3);
+//        list.add(2);
+//        list.add(1);
+////        Random random = new Random();
+////        int lastInt = 0;
+////        for (int i = 0; i < 125; i++){
+//////            list.add(random.nextInt(10));
+////            int rand = random.nextInt(3);
+////            if (lastInt == 0) lastInt ++;
+////            else if (lastInt != 0 && lastInt != 20 && rand == 0) lastInt++;
+////            else if (lastInt != 0 && lastInt != 20 && rand == 1) lastInt = lastInt;
+////            else if (lastInt != 0 && lastInt != 20 && rand == 2) lastInt--;
+////            else lastInt--;
+////            list.add(lastInt);
+////        }
+//        List<WaterPerDay> x = WorkWithDB.findAllWater();
+//        String result = DirtyJob.ListGraph(x.get(0).getHotWater(), true);
+//        System.out.println();
+//        String result1 = DirtyJob.ListGraph(x.get(0).getHotWater(), false);
+////        System.out.println(result);
     }
 }
