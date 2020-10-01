@@ -40,6 +40,7 @@ class StatusController {
 
         StringBuilder builder = new StringBuilder();
 
+
         switch (textMessage[1]) {
             case "water":
                 List<WaterPerDay> list = WorkWithDB.findAllWater();
@@ -84,9 +85,46 @@ class StatusController {
                 }
                 break;
             case "graph":
-                responseText = "График в разработке";
-                responseKeyboard = getCategoryMarkup();
+
+                List<WaterPerDay> waterPerDayListForYears = WorkWithDB.findAllWater();
+                List<Integer> yearsList = new ArrayList<>();
+                int year = 0;
+                for (WaterPerDay x : waterPerDayListForYears){
+                    if (year != x.getYear()){
+                        year = x.getYear();
+                        yearsList.add(x.getYear());
+                    }
+                }
+                responseText = "Выберите год";
+                responseKeyboard = getTimeKeyboard(yearsList, "year");
                 break;
+            case "year":
+
+                List<WaterPerDay> waterPerDayListForMonths = WorkWithDB.findAllWater();
+                List<Integer> monthList = new ArrayList<>();
+                int month = 0;
+                for (WaterPerDay x : waterPerDayListForMonths){
+                    if (month != x.getMonth()){
+                        month = x.getMonth();
+                        monthList.add(x.getMonth());
+                    }
+                }
+                responseText = "Выберите месяц";
+                responseKeyboard = getTimeKeyboard(monthList, "month");
+
+                break;
+            case "month":
+                List<WaterPerDay> waterPerDayListForDay = WorkWithDB.findAllWater();
+                List<Integer> dayList = new ArrayList<>();
+                int day = 0;
+                for (WaterPerDay x : waterPerDayListForDay){
+                    if (day != x.getDay()){
+                        day = x.getDay();
+                        dayList.add(x.getDay());
+                    }
+                }
+                responseText = "Выберите месяц";
+                responseKeyboard = getTimeKeyboard(dayList, "day");
             default:
                 responseText = "Выберите категорию";
                 responseKeyboard = getCategoryMarkup();
@@ -105,9 +143,29 @@ class StatusController {
 //            builder.append(i + 1).append(" ");
 //        }
 //        responseText = builder.toString();
+    }
 
+    private InlineKeyboardMarkup getTimeKeyboard(List<Integer> list, String time){
 
+        String text = "";
+        if (time.equals("year"))
+            text = "20";
 
+        System.out.println("list.size() = " + list.size());
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+
+        for (int x : list)
+            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(text + x)
+                    .setCallbackData("/status " + time + " " + x));
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+
+        markup.setKeyboard(rowList);
+
+        return markup;
     }
 
     private InlineKeyboardMarkup getCategoryMarkup() {

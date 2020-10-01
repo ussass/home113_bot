@@ -25,6 +25,20 @@ public class WaterPerDay {
         return date;
     }
 
+    public int getYear(){
+        return date / 10000;
+    }
+
+    public int getMonth(){
+        return date / 100 % 100;
+    }
+
+    public int getDay(){
+        return date % 100;
+    }
+
+
+
     public int getHotWaterTotal() {
         return getTotal(hotWater);
     }
