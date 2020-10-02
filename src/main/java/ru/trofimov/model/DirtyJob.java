@@ -12,8 +12,8 @@ public class DirtyJob {
         for (Integer integer : list) {
             if (maxValue < integer) maxValue = integer;
         }
-//        String empty = "   ";
-        String empty = " ";
+        String empty = "  ";
+//        String empty = " ";
 
         for (int i = maxValue; i > 0; i--){
             if (i > 9) {
@@ -40,8 +40,8 @@ public class DirtyJob {
             builder.append(" ");
         }
 
-        System.out.println(builder.toString());
+//        System.out.println(builder.toString());
 
-        return "";
+        return builder.toString();
     }
 }

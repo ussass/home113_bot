@@ -72,6 +72,13 @@ public class Main {
     {
         run();
 
+//        int date = 200925;
+//
+//        WaterPerDay water = WorkWithDB.getWaterByDate(date);
+//
+//        String result = DirtyJob.ListGraph(water.getHotWater(),true);
+//
+//        System.out.println(result);
 
 //        List<Integer> list = new ArrayList<>();
 

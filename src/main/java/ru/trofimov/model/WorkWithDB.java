@@ -169,6 +169,27 @@ public class WorkWithDB {
         return list;
     }
 
+    public static WaterPerDay getWaterByDate(int date) {
+        WaterPerDay water = new WaterPerDay(0, new ArrayList<>(), new ArrayList<>());
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM watermeterreadings WHERE date = " + date + ";");
+            while (resultSet.next()) {
+                List<Integer> hotWater = new ArrayList<>(24);
+                List<Integer> coldWater = new ArrayList<>(24);
+                for (int i = 0; i < 24; i ++){
+                    hotWater.add(resultSet.getInt("hot" + i));
+                    coldWater.add(resultSet.getInt("cold" + i));
+                }
+                water = new WaterPerDay(resultSet.getInt("date"), hotWater, coldWater);
+            }
+            return water;
+        } catch (SQLException e) {
+            System.out.println("Неудалось загрузить класс драйвера!");
+        }
+
+        return water;
+    }
+
 }
 
 

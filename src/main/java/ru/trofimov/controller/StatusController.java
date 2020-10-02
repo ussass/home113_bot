@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterPerDay;
+import ru.trofimov.model.DirtyJob;
 import ru.trofimov.model.WorkWithDB;
 
 import java.util.ArrayList;
@@ -129,6 +130,15 @@ class StatusController {
 
                 responseText = "На следующие даты доступен график потребления воды:";
                 responseKeyboard = getTimeKeyboard(dayList, "day");
+                break;
+            case "day":
+
+                WaterPerDay water = WorkWithDB.getWaterByDate(Integer.parseInt(textMessage[2]));
+
+                StringBuilder dayBuilder = new StringBuilder();
+                dayBuilder.append(DirtyJob.ListGraph(water.getHotWater(),true));
+                responseText = dayBuilder.toString();
+//                responseKeyboard = getCategoryMarkup();
                 break;
             default:
                 responseText = "Выберите категорию";
