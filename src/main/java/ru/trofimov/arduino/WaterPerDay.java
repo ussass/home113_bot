@@ -33,8 +33,12 @@ public class WaterPerDay {
         return date / 100 % 100;
     }
 
+    public int getYearWithMonth(){
+        return date / 100;
+    }
+
     public int getDay(){
-        return date % 100;
+        return date;
     }
 
 

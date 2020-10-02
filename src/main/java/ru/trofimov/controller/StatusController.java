@@ -104,9 +104,10 @@ class StatusController {
                 List<Integer> monthList = new ArrayList<>();
                 int month = 0;
                 for (WaterPerDay x : waterPerDayListForMonths){
-                    if (month != x.getMonth()){
-                        month = x.getMonth();
-                        monthList.add(x.getMonth());
+                    if (month != x.getYearWithMonth() && x.getYearWithMonth() / 100 == Integer.parseInt(textMessage[2])){
+                        month = x.getYearWithMonth();
+                        monthList.add(x.getYearWithMonth());
+
                     }
                 }
                 responseText = "Выберите месяц";
@@ -118,50 +119,77 @@ class StatusController {
                 List<Integer> dayList = new ArrayList<>();
                 int day = 0;
                 for (WaterPerDay x : waterPerDayListForDay){
-                    if (day != x.getDay()){
+                    if (day != x.getDay() && x.getDay() / 100 == Integer.parseInt(textMessage[2])){
                         day = x.getDay();
                         dayList.add(x.getDay());
                     }
                 }
-                responseText = "Выберите месяц";
+                for (int x : dayList)
+                    System.out.println("x = " + x);
+
+                responseText = "На следующие даты доступен график потребления воды:";
                 responseKeyboard = getTimeKeyboard(dayList, "day");
+                break;
             default:
                 responseText = "Выберите категорию";
                 responseKeyboard = getCategoryMarkup();
         }
-
-//        List<WaterPerDay> list = WorkWithDB.findAllWater();
-//        WaterPerDay water = list.get(list.size()-1);
-//
-//        StringBuilder builder = new StringBuilder();
-//        builder.append("Литры ");
-//        for (int x : water.getColdWater())
-//            builder.append(x).append(" ");
-//        builder.append("\n");
-//        builder.append("1    ");
-//        for (int i = 0; i < 24; i++){
-//            builder.append(i + 1).append(" ");
-//        }
-//        responseText = builder.toString();
     }
 
     private InlineKeyboardMarkup getTimeKeyboard(List<Integer> list, String time){
 
         String text = "";
-        if (time.equals("year"))
-            text = "20";
-
-        System.out.println("list.size() = " + list.size());
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow4 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow5 = new ArrayList<>();
 
-        for (int x : list)
-            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(text + x)
-                    .setCallbackData("/status " + time + " " + x));
+        for (int i = 0; i < list.size(); i++) {
+            if (time.equals("year"))
+                text = "20" + list.get(i);
+            else if (time.equals("month")) {
+                switch (list.get(i) % 100){
+                    case 1: text = "январь";break;
+                    case 2: text = "февраль";break;
+                    case 3: text = "март";break;
+                    case 4: text = "апрель";break;
+                    case 5: text = "май";break;
+                    case 6: text = "июнь";break;
+                    case 7: text = "июль";break;
+                    case 8: text = "август";break;
+                    case 9: text = "сентябрь";break;
+                    case 10: text = "октябрь";break;
+                    case 11: text = "ноябрь";break;
+                    case 12: text = "декабрь";break;
+                }
+            } else text = "" + list.get(i) % 100;
+            if (i < 7)
+                keyboardButtonsRow1.add(new InlineKeyboardButton().setText(text)
+                        .setCallbackData("/status " + time + " " + list.get(i)));
+            if ( i>= 7 && i < 14)
+                keyboardButtonsRow2.add(new InlineKeyboardButton().setText(text)
+                        .setCallbackData("/status " + time + " " + list.get(i)));
+            if ( i>= 14 && i < 21)
+                keyboardButtonsRow3.add(new InlineKeyboardButton().setText(text)
+                        .setCallbackData("/status " + time + " " + list.get(i)));
+            if ( i>= 21 && i < 28)
+                keyboardButtonsRow4.add(new InlineKeyboardButton().setText(text)
+                        .setCallbackData("/status " + time + " " + list.get(i)));
+            if ( i>= 28 && i < 35)
+                keyboardButtonsRow5.add(new InlineKeyboardButton().setText(text)
+                        .setCallbackData("/status " + time + " " + list.get(i)));
+
+        }
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
+        rowList.add(keyboardButtonsRow2);
+        rowList.add(keyboardButtonsRow3);
+        rowList.add(keyboardButtonsRow4);
+        rowList.add(keyboardButtonsRow5);
 
         markup.setKeyboard(rowList);
 
@@ -188,3 +216,15 @@ class StatusController {
         return markup;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
