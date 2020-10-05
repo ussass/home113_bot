@@ -190,6 +190,34 @@ public class WorkWithDB {
         return water;
     }
 
+    public static List<Integer> getWaterByDatePreviousAndNext(int date) {
+        List<Integer> list = new ArrayList<>();
+        int[] dates = new int[2];
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            ResultSet resultSet = connection.createStatement().executeQuery("select * from watermeterreadings\n" +
+                    "where (\n" +
+                    "    date = IFNULL((select min(date) from watermeterreadings where date > " + date + "),0)\n" +
+                    "    or  date = IFNULL((select max(date) from watermeterreadings where date < " + date + "),0)\n" +
+                    "       )");
+            while (resultSet.next()) {
+                list.add(resultSet.getInt("date"));
+                if (resultSet.getInt("date") < date)
+                    dates[0] = resultSet.getInt("date");
+                if (resultSet.getInt("date") > date)
+                    dates[1] = resultSet.getInt("date");
+            }
+        } catch (SQLException e) {
+            System.out.println("Неудалось загрузить класс драйвера!");
+        }
+
+        for (int x : dates)
+            System.out.println("x = " + x);
+
+        return list;
+    }
+
+
+
 }
 
 

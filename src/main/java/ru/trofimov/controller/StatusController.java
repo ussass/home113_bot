@@ -136,9 +136,18 @@ class StatusController {
                 WaterPerDay water = WorkWithDB.getWaterByDate(Integer.parseInt(textMessage[2]));
 
                 StringBuilder dayBuilder = new StringBuilder();
+                dayBuilder.append("Показанние горячей воды по часам:\n\n");
                 dayBuilder.append(DirtyJob.ListGraph(water.getHotWater(),true));
+                dayBuilder.append("\n\n");
+                dayBuilder.append("Показанние холодной воды по часам:\n\n");
+                dayBuilder.append(DirtyJob.ListGraph(water.getColdWater(),true));
+
+                for (int x : WorkWithDB.getWaterByDatePreviousAndNext(Integer.parseInt(textMessage[2])))
+                System.out.println(x);
+
+
                 responseText = dayBuilder.toString();
-//                responseKeyboard = getCategoryMarkup();
+                responseKeyboard = getGraphMarkup();
                 break;
             default:
                 responseText = "Выберите категорию";
@@ -203,6 +212,22 @@ class StatusController {
 
         markup.setKeyboard(rowList);
 
+        return markup;
+    }
+    private InlineKeyboardMarkup getGraphMarkup() {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("вчера")
+                .setCallbackData("/status "));
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("На главную")
+                .setCallbackData("/help"));
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("вторая половина дня")
+                .setCallbackData("/status "));
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+
+        markup.setKeyboard(rowList);
         return markup;
     }
 
