@@ -71,6 +71,9 @@ public class Main {
     public static void main(String[] args)
     {
         run();
+//
+//        String black = "\u25A0\u25FF";
+//        System.out.println(black);
 
 //        int date = 200925;
 //
