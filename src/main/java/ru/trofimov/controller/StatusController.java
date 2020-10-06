@@ -125,29 +125,38 @@ class StatusController {
                         dayList.add(x.getDay());
                     }
                 }
-                for (int x : dayList)
-                    System.out.println("x = " + x);
 
                 responseText = "На следующие даты доступен график потребления воды:";
                 responseKeyboard = getTimeKeyboard(dayList, "day");
                 break;
             case "day":
 
-                WaterPerDay water = WorkWithDB.getWaterByDate(Integer.parseInt(textMessage[2]));
+                int date = Integer.parseInt(textMessage[2]);
+                WaterPerDay water = WorkWithDB.getWaterByDate(date);
+                int[] neighboringDays = WorkWithDB.getWaterByDatePreviousAndNext(date);
+                boolean isAm = true;
+                if (textMessage.length > 3) isAm = false;
+
 
                 StringBuilder dayBuilder = new StringBuilder();
-                dayBuilder.append("Показанние горячей воды по часам:\n\n");
-                dayBuilder.append(DirtyJob.ListGraph(water.getHotWater(),true));
+                dayBuilder.append("Показания на ").append(date % 100).append(" ");
+                dayBuilder.append(dateIntToString(date / 100 % 100, false)).append(" ").append(date / 10000 + 2000);
+                dayBuilder.append(".\nГорячей воды");
+                if (isAm) dayBuilder.append(" первой");
+                else  dayBuilder.append(" второй");
+                dayBuilder.append(" половины дня по часам:\n\n");
+                dayBuilder.append(DirtyJob.ListGraph(water.getHotWater(), isAm));
                 dayBuilder.append("\n\n");
-                dayBuilder.append("Показанние холодной воды по часам:\n\n");
-                dayBuilder.append(DirtyJob.ListGraph(water.getColdWater(),true));
+                dayBuilder.append("Холодной воды");
+                if (isAm) dayBuilder.append(" первой");
+                else  dayBuilder.append(" второй");
+                dayBuilder.append(" половины дня по часам:\n\n");
+                dayBuilder.append(DirtyJob.ListGraph(water.getColdWater(), isAm));
 
-                for (int x : WorkWithDB.getWaterByDatePreviousAndNext(Integer.parseInt(textMessage[2])))
-                System.out.println(x);
 
 
                 responseText = dayBuilder.toString();
-                responseKeyboard = getGraphMarkup();
+                responseKeyboard = getGraphMarkup(neighboringDays, date, isAm);
                 break;
             default:
                 responseText = "Выберите категорию";
@@ -170,20 +179,7 @@ class StatusController {
             if (time.equals("year"))
                 text = "20" + list.get(i);
             else if (time.equals("month")) {
-                switch (list.get(i) % 100){
-                    case 1: text = "январь";break;
-                    case 2: text = "февраль";break;
-                    case 3: text = "март";break;
-                    case 4: text = "апрель";break;
-                    case 5: text = "май";break;
-                    case 6: text = "июнь";break;
-                    case 7: text = "июль";break;
-                    case 8: text = "август";break;
-                    case 9: text = "сентябрь";break;
-                    case 10: text = "октябрь";break;
-                    case 11: text = "ноябрь";break;
-                    case 12: text = "декабрь";break;
-                }
+                text = dateIntToString(list.get(i), true);
             } else text = "" + list.get(i) % 100;
             if (i < 7)
                 keyboardButtonsRow1.add(new InlineKeyboardButton().setText(text)
@@ -214,18 +210,27 @@ class StatusController {
 
         return markup;
     }
-    private InlineKeyboardMarkup getGraphMarkup() {
+    private InlineKeyboardMarkup getGraphMarkup(int[] neighboringDays, int today, boolean isAm) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("вчера")
-                .setCallbackData("/status "));
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("На главную")
+        if (neighboringDays[0] != 0)
+            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[0]))
+                    .setCallbackData("/status day " + neighboringDays[0]));
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText((isAm ? "вторая" : "первая") + " половина дня")
+//                .setCallbackData(callback));
+                .setCallbackData("/status day " + today + (isAm ? " 1" : "")));
+        if (neighboringDays[1] != 0)
+            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[1]))
+                    .setCallbackData("/status day " + neighboringDays[1]));
+
+
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        keyboardButtonsRow2.add(new InlineKeyboardButton().setText("На главную")
                 .setCallbackData("/help"));
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("вторая половина дня")
-                .setCallbackData("/status "));
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
+        rowList.add(keyboardButtonsRow2);
 
         markup.setKeyboard(rowList);
         return markup;
@@ -249,6 +254,29 @@ class StatusController {
         markup.setKeyboard(rowList);
 
         return markup;
+    }
+
+    private String dateRemake (int date){
+        String month = date /100 % 100 < 10 ? "0" + date /100 % 100 : " " + date / 100 % 100;
+        return date % 100 + "." + month + "." + (date / 10000 + 2000);
+    }
+
+    private String dateIntToString (int date, boolean isNominative){
+        switch (date % 100){
+            case 1: return isNominative ? "январь" : "января";
+            case 2: return isNominative ? "февраль" : "февраля";
+            case 3: return isNominative ? "март" : "марта";
+            case 4: return isNominative ? "апрель" : "апреля";
+            case 5: return isNominative ? "май" : "мая";
+            case 6: return isNominative ? "июнь" : "июня";
+            case 7: return isNominative ? "июль" : "июля";
+            case 8: return isNominative ? "август" : "августа";
+            case 9: return isNominative ? "сентябрь" : "сентября";
+            case 10: return isNominative ? "октябрь" : "октября";
+            case 11: return isNominative ? "ноябрь" : "ноября";
+            case 12: return isNominative ? "декабрь" : "декабря";
+            default: return "";
+        }
     }
 }
 
