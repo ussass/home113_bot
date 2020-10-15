@@ -4,8 +4,13 @@ import com.google.inject.internal.cglib.core.$ClassNameReader;
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterControl;
 import ru.trofimov.arduino.WaterPerDay;
+import ru.trofimov.entity.Ingredient;
+import ru.trofimov.entity.Step;
 import ru.trofimov.model.DirtyJob;
+import ru.trofimov.model.Recipe;
 import ru.trofimov.model.WorkWithDB;
+import ru.trofimov.service.RecipeService;
+import ru.trofimov.service.RecipeServiceImp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,56 +75,22 @@ public class Main {
 
     public static void main(String[] args)
     {
-        run();
-//
-//        String black = "\u25A0\u25FF";
-//        System.out.println(black);
-
-//        int date = 200925;
-//
-//        WaterPerDay water = WorkWithDB.getWaterByDate(date);
-//
-//        String result = DirtyJob.ListGraph(water.getHotWater(),true);
-//
-//        System.out.println(result);
-
-//        List<Integer> list = new ArrayList<>();
-
-
-
-
-
-
-//        ArrayList<Integer> list = new ArrayList<>();
-////        ArrayList<WaterPerDay> list = (ArrayList<WaterPerDay>) WorkWithDB.findAllWater();
-//        list.add(1);
-//        list.add(2);
-//        list.add(3);
-//        list.add(4);
-//        list.add(5);
-//        list.add(1);
-//        list.add(1);
-//        list.add(5);
-//        list.add(4);
-//        list.add(3);
-//        list.add(2);
-//        list.add(1);
-////        Random random = new Random();
-////        int lastInt = 0;
-////        for (int i = 0; i < 125; i++){
-//////            list.add(random.nextInt(10));
-////            int rand = random.nextInt(3);
-////            if (lastInt == 0) lastInt ++;
-////            else if (lastInt != 0 && lastInt != 20 && rand == 0) lastInt++;
-////            else if (lastInt != 0 && lastInt != 20 && rand == 1) lastInt = lastInt;
-////            else if (lastInt != 0 && lastInt != 20 && rand == 2) lastInt--;
-////            else lastInt--;
-////            list.add(lastInt);
-////        }
-//        List<WaterPerDay> x = WorkWithDB.findAllWater();
-//        String result = DirtyJob.ListGraph(x.get(0).getHotWater(), true);
-//        System.out.println();
-//        String result1 = DirtyJob.ListGraph(x.get(0).getHotWater(), false);
-////        System.out.println(result);
+//        run();
+        RecipeService service = new RecipeServiceImp();
+//        List<Recipe> list = service.findAll();
+//        for (Recipe x : list){
+//            System.out.println(x.getRecipeName());
+//        }
+        Recipe recipe = service.findById(51);
+        recipe.initializationOfDependentClasses();
+//        System.out.println(recipe.getIngredientsClass()[0].toString());
+        for (Ingredient x : recipe.getIngredients())
+            System.out.println(x.getIngredientName() + ": " + x.getQuantity() + " " + x.getMeasure());
+        System.out.println("------------------");
+        for (Step x : recipe.getSteps())
+            System.out.println(x.getPathToImage() + ": " + x.getDescription());
+        System.out.println("------------------");
+        System.out.println(recipe.getRecipeName());
+        System.out.println(recipe.getIngredientsString());
     }
 }
