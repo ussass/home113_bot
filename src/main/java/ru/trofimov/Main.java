@@ -14,6 +14,9 @@ import ru.trofimov.service.RecipeServiceImp;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -73,24 +76,10 @@ public class Main {
         window.setVisible(true);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws URISyntaxException, IOException {
 //        run();
-        RecipeService service = new RecipeServiceImp();
-//        List<Recipe> list = service.findAll();
-//        for (Recipe x : list){
-//            System.out.println(x.getRecipeName());
-//        }
-        Recipe recipe = service.findById(51);
-        recipe.initializationOfDependentClasses();
-//        System.out.println(recipe.getIngredientsClass()[0].toString());
-        for (Ingredient x : recipe.getIngredients())
-            System.out.println(x.getIngredientName() + ": " + x.getQuantity() + " " + x.getMeasure());
-        System.out.println("------------------");
-        for (Step x : recipe.getSteps())
-            System.out.println(x.getPathToImage() + ": " + x.getDescription());
-        System.out.println("------------------");
-        System.out.println(recipe.getRecipeName());
-        System.out.println(recipe.getIngredientsString());
+
+
+
     }
 }

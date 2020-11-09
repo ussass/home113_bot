@@ -8,7 +8,7 @@ import java.util.List;
 
 public class RecipeServiceImp implements RecipeService {
 
-    RecipeDao recipeDao = new RecipeDaoImp();
+    private RecipeDao recipeDao = new RecipeDaoImp();
     @Override
     public Recipe findById(int id) {
         return recipeDao.findById(id);

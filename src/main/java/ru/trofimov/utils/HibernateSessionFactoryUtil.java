@@ -4,6 +4,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import ru.trofimov.model.Recipe;
+import ru.trofimov.model.Water;
+import ru.trofimov.model.WaterReading;
 
 public class HibernateSessionFactoryUtil {
 
@@ -12,11 +14,19 @@ public class HibernateSessionFactoryUtil {
     public HibernateSessionFactoryUtil() {
     }
 
-    public static SessionFactory getSessionFactory(){
+    public static SessionFactory getSessionFactory(String className){
         if (sessionFactory == null){
             try {
                 Configuration configuration = new Configuration().configure();
-                configuration.addAnnotatedClass(Recipe.class);
+                switch (className){
+                    case "recipe" :
+                        configuration.addAnnotatedClass(Recipe.class);
+                        break;
+                    case "water" :
+                        configuration.addAnnotatedClass(Water.class);
+                        configuration.addAnnotatedClass(WaterReading.class);
+                        break;
+                }
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
             } catch (Exception e){
@@ -25,6 +35,8 @@ public class HibernateSessionFactoryUtil {
         }
         return sessionFactory;
     }
+
+
 
     public static void close(){
         sessionFactory.close();

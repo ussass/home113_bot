@@ -1,0 +1,17 @@
+package ru.trofimov.dao;
+
+import ru.trofimov.model.Water;
+
+import java.util.List;
+
+public interface WaterDao {
+    public Water findById(int id);
+
+    public void save(Water water);
+
+    public void update(Water water);
+
+    public void delete(Water water);
+
+    public List<Water> findAll(int category);
+}
