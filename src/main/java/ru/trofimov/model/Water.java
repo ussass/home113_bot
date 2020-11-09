@@ -1,10 +1,11 @@
 package ru.trofimov.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "water")
+@Table(name = "waters")
 public class Water {
 
     @Id
@@ -14,10 +15,15 @@ public class Water {
 
     private int date;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "water", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WaterReading> readings;
 
     public Water() {
+    }
+
+    public Water(int date) {
+        this.date = date;
+        readings = new ArrayList<>();
     }
 
     public void addReading(WaterReading reading) {

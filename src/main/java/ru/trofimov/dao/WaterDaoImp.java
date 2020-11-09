@@ -25,6 +25,7 @@ public class WaterDaoImp implements WaterDao{
             tx1.commit();
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Exception: " + e.toString());
         }
     }
 
@@ -40,7 +41,7 @@ public class WaterDaoImp implements WaterDao{
 
     @Override
     public List<Water> findAll(int category) {
-        String sql = category == 0? "FROM Water" : "FROM Water where category = " + category;
-        return (List<Water>) HibernateSessionFactoryUtil.getSessionFactory("recipe").openSession().createQuery(sql).list();
+        String sql = category == 0? "FROM Waters" : "FROM Water where category = " + category;
+        return (List<Water>) HibernateSessionFactoryUtil.getSessionFactory("water").openSession().createQuery(sql).list();
     }
 }

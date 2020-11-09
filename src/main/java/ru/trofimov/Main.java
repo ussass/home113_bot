@@ -6,11 +6,11 @@ import ru.trofimov.arduino.WaterControl;
 import ru.trofimov.arduino.WaterPerDay;
 import ru.trofimov.entity.Ingredient;
 import ru.trofimov.entity.Step;
-import ru.trofimov.model.DirtyJob;
-import ru.trofimov.model.Recipe;
-import ru.trofimov.model.WorkWithDB;
+import ru.trofimov.model.*;
 import ru.trofimov.service.RecipeService;
 import ru.trofimov.service.RecipeServiceImp;
+import ru.trofimov.service.WaterService;
+import ru.trofimov.service.WaterServiceImp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,7 +79,22 @@ public class Main {
     public static void main(String[] args) throws URISyntaxException, IOException {
 //        run();
 
+        WaterService service = new WaterServiceImp();
+        Water water = new Water(123);
 
+        WaterReading hot = new WaterReading(true);
+        hot.setH0(10);
+        hot.setH1(11);
+        hot.setWater(water);
+        water.addReading(hot);
+
+        WaterReading cold = new WaterReading(false);
+        cold.setH0(4);
+        cold.setH1(5);
+        cold.setWater(water);
+        water.addReading(cold);
+        service.save(water);
+//        userService.saveUser(user);
 
     }
 }
