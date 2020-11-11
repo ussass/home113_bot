@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "waters")
+@Table (name = "water")
 public class Water {
 
     @Id
@@ -13,22 +13,27 @@ public class Water {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "water_date")
     private int date;
 
     @OneToMany(mappedBy = "water", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WaterReading> readings;
+    private List<WaterReading> waterReadings;
 
     public Water() {
     }
 
     public Water(int date) {
         this.date = date;
-        readings = new ArrayList<>();
+        waterReadings = new ArrayList<>();
     }
 
-    public void addReading(WaterReading reading) {
-        reading.setWater(this);
-        readings.add(reading);
+    public void addReading(WaterReading waterReading) {
+        waterReading.setWater(this);
+        waterReadings.add(waterReading);
+    }
+
+    public void removeReading(WaterReading waterReading) {
+        waterReadings.remove(waterReading);
     }
 
     public int getId() {
@@ -47,11 +52,11 @@ public class Water {
         this.date = date;
     }
 
-    public List<WaterReading> getReadings() {
-        return readings;
+    public List<WaterReading> getWaterReadings() {
+        return waterReadings;
     }
 
-    public void setReadings(List<WaterReading> readings) {
-        this.readings = readings;
+    public void setWaterReadings(List<WaterReading> waterReadings) {
+        this.waterReadings = waterReadings;
     }
 }

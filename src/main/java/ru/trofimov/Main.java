@@ -11,6 +11,7 @@ import ru.trofimov.service.RecipeService;
 import ru.trofimov.service.RecipeServiceImp;
 import ru.trofimov.service.WaterService;
 import ru.trofimov.service.WaterServiceImp;
+import ru.trofimov.utils.HibernateSessionFactoryUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -79,22 +81,27 @@ public class Main {
     public static void main(String[] args) throws URISyntaxException, IOException {
 //        run();
 
-        WaterService service = new WaterServiceImp();
-        Water water = new Water(123);
+        Date date = new Date();
+//        int myDate = (date.getYear() - 100) * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+        int myTime = date.getHours() * 100 + date.getMinutes();
+        System.out.println("myTime = " + myTime);
 
-        WaterReading hot = new WaterReading(true);
+        WaterService service = new WaterServiceImp();
+        Water water = new Water(myTime);
+
+        WaterReading hot = new WaterReading(true, water);
         hot.setH0(10);
         hot.setH1(11);
-        hot.setWater(water);
         water.addReading(hot);
 
-        WaterReading cold = new WaterReading(false);
+        WaterReading cold = new WaterReading(false, water);
         cold.setH0(4);
         cold.setH1(5);
-        cold.setWater(water);
         water.addReading(cold);
         service.save(water);
 //        userService.saveUser(user);
+
+        HibernateSessionFactoryUtil.close();
 
     }
 }
