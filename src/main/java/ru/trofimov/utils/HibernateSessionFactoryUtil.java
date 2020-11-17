@@ -18,15 +18,15 @@ public class HibernateSessionFactoryUtil {
         if (sessionFactory == null){
             try {
                 Configuration configuration = new Configuration().configure();
-                switch (className){
-                    case "recipe" :
+//                switch (className){
+//                    case "recipe" :
                         configuration.addAnnotatedClass(Recipe.class);
-                        break;
-                    case "water" :
+//                        break;
+//                    case "water" :
                         configuration.addAnnotatedClass(Water.class);
                         configuration.addAnnotatedClass(WaterReading.class);
-                        break;
-                }
+//                        break;
+//                }
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
             } catch (Exception e){

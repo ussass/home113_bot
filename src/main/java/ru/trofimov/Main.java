@@ -1,27 +1,15 @@
 package ru.trofimov;
 
-import com.google.inject.internal.cglib.core.$ClassNameReader;
 import ru.trofimov.Bot.Bot;
-import ru.trofimov.arduino.WaterControl;
-import ru.trofimov.arduino.WaterPerDay;
-import ru.trofimov.entity.Ingredient;
-import ru.trofimov.entity.Step;
 import ru.trofimov.model.*;
 import ru.trofimov.service.RecipeService;
 import ru.trofimov.service.RecipeServiceImp;
-import ru.trofimov.service.WaterService;
-import ru.trofimov.service.WaterServiceImp;
 import ru.trofimov.utils.HibernateSessionFactoryUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 public class Main {
     private static void run()
@@ -79,29 +67,53 @@ public class Main {
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-//        run();
+        run();
 
-        Date date = new Date();
-//        int myDate = (date.getYear() - 100) * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
-        int myTime = date.getHours() * 100 + date.getMinutes();
-        System.out.println("myTime = " + myTime);
+//        RecipeService service = new RecipeServiceImp();
+//        List<Recipe> list = service.findAll();
+//        for (Recipe x : list)
+//            System.out.println(x.getRecipeName());
 
-        WaterService service = new WaterServiceImp();
-        Water water = new Water(myTime);
+//        Recipe recipe = service.findById(50);
+//        recipe.initializationOfDependentClasses();
+//        System.out.println(recipe.getRecipeName());
+//        System.out.println(recipe.getIngredients()[1].getIngredientName());
+//        System.out.println(recipe.getSteps()[0].getDescription());
+//        System.out.println(PreparationOfTheRecipe.getRecipe(recipe, 2));
 
-        WaterReading hot = new WaterReading(true, water);
-        hot.setH0(10);
-        hot.setH1(11);
-        water.addReading(hot);
 
-        WaterReading cold = new WaterReading(false, water);
-        cold.setH0(4);
-        cold.setH1(5);
-        water.addReading(cold);
-        service.save(water);
-//        userService.saveUser(user);
-
-        HibernateSessionFactoryUtil.close();
+//        Date date = new Date();
+////        int myDate = (date.getYear() - 100) * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+//        int myTime = date.getHours() * 100 + date.getMinutes();
+//        System.out.println("myTime = " + myTime);
+//
+//        WaterService service = new WaterServiceImp();
+//        Water water = new Water(myTime);
+//
+//        WaterReading hot = new WaterReading(true, true, water);
+//        hot.setH0(0);
+//        hot.setH1(1);
+//        water.addReading(hot);
+//
+//        WaterReading hot1 = new WaterReading(true, false, water);
+//        hot1.setH0(10);
+//        hot1.setH1(11);
+//        water.addReading(hot1);
+//
+//        WaterReading cold = new WaterReading(false, true, water);
+//        cold.setH0(2);
+//        cold.setH1(3);
+//        water.addReading(cold);
+//
+//        WaterReading cold1 = new WaterReading(false, false, water);
+//        cold1.setH0(12);
+//        cold1.setH1(13);
+//        water.addReading(cold1);
+//
+//        service.save(water);
+////        userService.saveUser(user);
+//
+//        HibernateSessionFactoryUtil.close();
 
     }
 }

@@ -2,9 +2,10 @@ package ru.trofimov.controller;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import ru.trofimov.entity.Recipe;
 import ru.trofimov.model.PreparationOfTheRecipe;
-import ru.trofimov.model.WorkWithDB;
+import ru.trofimov.model.Recipe;
+import ru.trofimov.service.RecipeService;
+import ru.trofimov.service.RecipeServiceImp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,8 @@ class RecipeController {
     private String responseText;
     private InlineKeyboardMarkup responseKeyboard;
 
-    RecipeController(String textMessage) {
-        this.textMessage = textMessage.split(" ");
+    RecipeController(String[] textMessage) {
+        this.textMessage = textMessage;
         responseKeyboard = new InlineKeyboardMarkup();
         prepareAnswer();
     }
@@ -41,11 +42,15 @@ class RecipeController {
 //        for (String x : textMessage)
 //            System.out.print(x + " ");
 //        System.out.println();
+        RecipeService service = new RecipeServiceImp();
 
         switch (textMessage[1]) {
             case "category":
                 stringBuilder.append("Доступны следующие рецепты:\n\n");
-                List<Recipe> list = WorkWithDB.findAll(Integer.parseInt(textMessage[2]));
+
+//                List<Recipe> list = WorkWithDB.findAll(Integer.parseInt(textMessage[2]));
+                List<Recipe> list = service.findAll(Integer.parseInt(textMessage[2]));
+
 
                 int count = textMessage.length == 4 ? Integer.parseInt(textMessage[3]) : 0;
 
@@ -68,9 +73,9 @@ class RecipeController {
             case "show":
                 int id = Integer.parseInt(textMessage[2]);
                 if (textMessage.length == 4)
-                    responseText = PreparationOfTheRecipe.getRecipe(id, Integer.parseInt(textMessage[3]));
+                    responseText = PreparationOfTheRecipe.getRecipe(service.findById(id), Integer.parseInt(textMessage[3]));
                 else
-                    responseText = PreparationOfTheRecipe.getRecipe(id);
+                    responseText = PreparationOfTheRecipe.getRecipe(service.findById(id));
                 for (int i = 0; i < 8; i++) {
                     callbackData.add("/recipes show " + textMessage[2] + " " + (i + 1));
                 }

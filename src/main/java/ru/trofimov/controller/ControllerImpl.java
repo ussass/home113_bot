@@ -11,12 +11,12 @@ import java.util.List;
 
 public class ControllerImpl implements Controller {
 
-    private String textMessage;
+    private String[] textMessage;
     private long chatId;
 
     @Override
     public void setTextMessage(String textMessage) {
-        this.textMessage = textMessage;
+        this.textMessage = textMessage.split(" ");
     }
 
     @Override
@@ -30,21 +30,23 @@ public class ControllerImpl implements Controller {
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        if (textMessage.split(" ")[0].equals("/recipes")){
-            RecipeController recipeController = new RecipeController(textMessage);
-            sendMessage.setText(recipeController.getText());
-            sendMessage.setReplyMarkup(recipeController.getMarkup());
 
+        switch (textMessage[0]){
+            case "/recipes":
+                RecipeController recipeController = new RecipeController(textMessage);
+                sendMessage.setText(recipeController.getText());
+                sendMessage.setReplyMarkup(recipeController.getMarkup());
+                break;
+            case "/home":
+                SecondController homeController = new HomeController(textMessage);
+                sendMessage.setText(homeController.getText());
+                sendMessage.setReplyMarkup(homeController.getResponseKeyboard());
+                break;
+            default:
+                sendMessage.setText(sendText());
+                sendMessage.setReplyMarkup(MyInlineKeyboard.simpleButton());
         }
-        else if (textMessage.split(" ")[0].equals("/status")){
-            StatusController statusController = new StatusController(textMessage);
-            sendMessage.setText(statusController.getText());
-            sendMessage.setReplyMarkup(statusController.getResponseKeyboard());
-        }
-        else {
-            sendMessage.setText(sendText());
-            sendMessage.setReplyMarkup(MyInlineKeyboard.simpleButton());
-        }
+
 
         Date date = new Date();
 
@@ -55,7 +57,7 @@ public class ControllerImpl implements Controller {
                 date.getHours()) + ':' +
                 min + ':' +
                 sec + "] " +
-                chatId + ": " + textMessage;
+                chatId + ": ";
         System.out.println(builder);
 
         return sendMessage;
@@ -65,7 +67,7 @@ public class ControllerImpl implements Controller {
         StringBuilder builder = new StringBuilder();
         String footer = "\n/help - помощь\n" +
                 "/recipes - рецепты";
-        switch (textMessage){
+        switch (textMessage[0]){
             case "/start":
                 builder.append("Добро пожаловать в Home113\n" +
                         "Пока тут только представлена домашняя база рецептов\n");

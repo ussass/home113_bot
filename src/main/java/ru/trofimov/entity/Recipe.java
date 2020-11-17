@@ -4,7 +4,8 @@ package ru.trofimov.entity;
 //import ru.trofimov.model.Crutch;
 //import ru.trofimov.model.DirtyJob;
 
-import java.util.ArrayList;
+import ru.trofimov.model.Ingredient;
+import ru.trofimov.model.Step;
 
 public class Recipe {
 
@@ -135,24 +136,24 @@ public class Recipe {
         }
         System.out.println();
         System.out.println("ingredients: " + ingredients.length);
-        for (Ingredient x : ingredients) {
-            System.out.print("   ");
-            try {
-                System.out.print(x.show() + " ");
-            } catch (Exception e) {
-                System.out.println("Exception: " + e.toString());
-            }
-        }
+//        for (Ingredient x : ingredients) {
+//            System.out.print("   ");
+//            try {
+//                System.out.print(x.show() + " ");
+//            } catch (Exception e) {
+//                System.out.println("Exception: " + e.toString());
+//            }
+//        }
         System.out.println();
         System.out.println("steps:");
-        for (Step x : steps) {
-            System.out.print("   ");
-            try {
-                System.out.print(x.show() + " ");
-            } catch (Exception e) {
-                System.out.println("Exception: " + e.toString());
-            }
-        }
+//        for (Step x : steps) {
+//            System.out.print("   ");
+//            try {
+//                System.out.print(x.show() + " ");
+//            } catch (Exception e) {
+//                System.out.println("Exception: " + e.toString());
+//            }
+//        }
         System.out.println();
         System.out.println("-------------------");
     }

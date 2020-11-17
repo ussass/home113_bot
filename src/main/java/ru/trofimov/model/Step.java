@@ -1,4 +1,4 @@
-package ru.trofimov.entity;
+package ru.trofimov.model;
 
 public class Step {
 

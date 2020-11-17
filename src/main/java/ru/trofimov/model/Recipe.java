@@ -1,8 +1,5 @@
 package ru.trofimov.model;
 
-import ru.trofimov.entity.Ingredient;
-import ru.trofimov.entity.Step;
-
 import javax.persistence.*;
 
 @Entity

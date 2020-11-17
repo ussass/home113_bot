@@ -1,25 +1,24 @@
 package ru.trofimov.model;
 
-import ru.trofimov.entity.Recipe;
+import ru.trofimov.model.Recipe;
 
 public class PreparationOfTheRecipe {
 
-    public static String getRecipe(int id){
-        Recipe recipe = WorkWithDB.read(id);
+    public static String getRecipe(Recipe recipe){
         return  getRecipePrivate(recipe, recipe.getPortion());
     }
 
-    public static String getRecipe(int id, int portions){
-        Recipe recipe = WorkWithDB.read(id);
+    public static String getRecipe(Recipe recipe, int portions){
         return  getRecipePrivate(recipe, portions);
     }
 
     private static String getRecipePrivate(Recipe recipe, int portions){
         StringBuilder builder = new StringBuilder();
+        recipe.initializationOfDependentClasses();
 
         builder.append(recipe.getRecipeName()).append('\n');
         builder.append("Количество порций: ").append(portions).append('\n');
-        builder.append("Время приготовления: ").append(recipe.getTime()).append("\n\n");
+        builder.append("Время приготовления: ").append(recipe.getCookingTime()).append("\n\n");
         builder.append("Ингредиенты:").append('\n');
         for (int i = 0; i < recipe.getIngredients().length; i ++){
             if (recipe.getIngredients()[i].getIngredientName().equals("")) continue;
