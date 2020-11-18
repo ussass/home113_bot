@@ -7,6 +7,8 @@ import ru.trofimov.model.Recipe;
 import ru.trofimov.model.Water;
 import ru.trofimov.model.WaterReading;
 
+import javax.persistence.criteria.CriteriaQuery;
+
 public class HibernateSessionFactoryUtil {
 
     private static SessionFactory sessionFactory;
@@ -14,31 +16,27 @@ public class HibernateSessionFactoryUtil {
     public HibernateSessionFactoryUtil() {
     }
 
-    public static SessionFactory getSessionFactory(String className){
-        if (sessionFactory == null){
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration().configure();
-//                switch (className){
-//                    case "recipe" :
-                        configuration.addAnnotatedClass(Recipe.class);
-//                        break;
-//                    case "water" :
-                        configuration.addAnnotatedClass(Water.class);
-                        configuration.addAnnotatedClass(WaterReading.class);
-//                        break;
-//                }
+                configuration.addAnnotatedClass(Recipe.class);
+                configuration.addAnnotatedClass(Water.class);
+                configuration.addAnnotatedClass(WaterReading.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
-            } catch (Exception e){
+
+
+            } catch (Exception e) {
                 System.out.println("Исключение: " + e);
             }
         }
+
         return sessionFactory;
     }
 
 
-
-    public static void close(){
+    public static void close() {
         sessionFactory.close();
     }
 

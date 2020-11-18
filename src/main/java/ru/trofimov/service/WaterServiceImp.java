@@ -4,6 +4,8 @@ import ru.trofimov.dao.WaterDao;
 import ru.trofimov.dao.WaterDaoImp;
 import ru.trofimov.model.Water;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WaterServiceImp implements WaterService{
@@ -31,7 +33,33 @@ public class WaterServiceImp implements WaterService{
     }
 
     @Override
-    public List<Water> findAll(int category) {
-        return dao.findAll(category);
+    public List<Water> findAll() {
+        return dao.findAll();
+    }
+
+    @Override
+    public Water getWaterByDate(int date) {
+        return dao.getWaterByDate(date);
+    }
+
+    @Override
+    public int[] getWaterByDatePreviousAndNext(int date) {
+        List<Water> waterList = dao.findAll();
+        List<Integer> waterDayList = new ArrayList<>();
+
+        for (Water water : waterList)
+            waterDayList.add(water.getDay());
+
+        Collections.sort(waterDayList);
+
+        int[] result = new int[2];
+
+        for (int i = 0; i < waterDayList.size(); i++) {
+            if (waterDayList.get(i) == date) {
+                if (i != 0) result[0] = waterDayList.get(i - 1);
+                if (i != waterDayList.size() - 1) result[1] = waterDayList.get(i + 1);
+            }
+        }
+        return result;
     }
 }

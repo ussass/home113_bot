@@ -1,6 +1,8 @@
 package ru.trofimov.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "water_readings")
@@ -181,6 +183,27 @@ public class WaterReading {
 
     public void setH11(int h11) {
         this.h11 = h11;
+    }
+
+    public int sumAll(){
+        return h0 + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11;
+    }
+
+    public List<Integer> getWaterList(){
+        List<Integer> list = new ArrayList<>(12);
+        list.add(h0);
+        list.add(h1);
+        list.add(h2);
+        list.add(h3);
+        list.add(h4);
+        list.add(h5);
+        list.add(h6);
+        list.add(h7);
+        list.add(h8);
+        list.add(h9);
+        list.add(h10);
+        list.add(h11);
+        return list;
     }
 
 }

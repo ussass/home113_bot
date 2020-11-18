@@ -59,4 +59,20 @@ public class Water {
     public void setWaterReadings(List<WaterReading> waterReadings) {
         this.waterReadings = waterReadings;
     }
+
+    public int getYear(){
+        return date / 10000;
+    }
+
+    public int getMonth(){
+        return date / 100 % 100;
+    }
+
+    public int getYearWithMonth(){
+        return date / 100;
+    }
+
+    public int getDay(){
+        return date;
+    }
 }

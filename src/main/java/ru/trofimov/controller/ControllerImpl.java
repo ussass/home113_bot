@@ -53,11 +53,13 @@ public class ControllerImpl implements Controller {
         String sec = date.getSeconds() < 10 ? "0" + date.getSeconds() : "" + date.getSeconds();
         String min = date.getMinutes() < 10 ? "0" + date.getMinutes() : "" + date.getMinutes();
 
-        String builder = String.valueOf("[" +
+        StringBuilder builder = new StringBuilder(String.valueOf("[" +
                 date.getHours()) + ':' +
                 min + ':' +
                 sec + "] " +
-                chatId + ": ";
+                chatId + ": ");
+        for (String x : textMessage)
+            builder.append(x).append(" ");
         System.out.println(builder);
 
         return sendMessage;

@@ -2,6 +2,8 @@ package ru.trofimov.controller;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.trofimov.arduino.WaterPerDay;
+import ru.trofimov.model.WorkWithDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,18 @@ public class HomeController implements SecondController{
             responseKeyboard = getCategoryMarkup();
             return;
         }
+
+
+        switch (textMessage[1]) {
+            case "water":
+                SecondController waterController = new WaterController(textMessage);
+                responseText = waterController.getText();
+                responseKeyboard = waterController.getResponseKeyboard();
+                break;
+            default:
+                responseText = "Такой команды нету!";
+
+        }
     }
 
     private InlineKeyboardMarkup getCategoryMarkup() {
@@ -41,15 +55,9 @@ public class HomeController implements SecondController{
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(new InlineKeyboardButton().setText("Показания воды")
-                .setCallbackData("/status water"));
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("График потребления")
-                .setCallbackData("/status graph"));
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow2.add(new InlineKeyboardButton().setText("Установить начальное значение")
-                .setCallbackData("/status set"));
+                .setCallbackData("/home water"));
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
         markup.setKeyboard(rowList);
 
         return markup;

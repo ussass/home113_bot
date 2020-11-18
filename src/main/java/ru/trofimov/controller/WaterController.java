@@ -5,6 +5,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterPerDay;
 import ru.trofimov.model.DirtyJob;
+import ru.trofimov.model.Water;
+import ru.trofimov.model.WaterReading;
 import ru.trofimov.model.WorkWithDB;
 import ru.trofimov.service.WaterService;
 import ru.trofimov.service.WaterServiceImp;
@@ -12,7 +14,7 @@ import ru.trofimov.service.WaterServiceImp;
 import java.util.ArrayList;
 import java.util.List;
 
-class StatusController {
+public class WaterController implements SecondController {
 
     private String[] textMessage;
     private String responseText;
@@ -20,40 +22,45 @@ class StatusController {
     private static int baseHot;
     private static int baseCold;
 
-    StatusController(String textMessage) {
-        this.textMessage = textMessage.split(" ");
-        responseKeyboard = new InlineKeyboardMarkup();
+    public WaterController(String[] textMessage) {
+        this.textMessage = textMessage;
+        responseText = "IT IS WATER CONTROLLER!!";
+        responseKeyboard = getCategoryMarkup();
         prepareAnswer();
     }
 
-    String getText() {
+    @Override
+    public String getText() {
         return responseText;
     }
 
-    InlineKeyboardMarkup getResponseKeyboard() {
+    @Override
+    public InlineKeyboardMarkup getResponseKeyboard() {
         return responseKeyboard;
     }
 
-    private void prepareAnswer(){
-        if (textMessage.length == 1) {
+    private void prepareAnswer() {
+        if (textMessage.length == 2) {
             responseText = "Выберите категорию";
             responseKeyboard = getCategoryMarkup();
             return;
         }
 
         StringBuilder builder = new StringBuilder();
+        WaterService service = new WaterServiceImp();
 
+        switch (textMessage[2]) {
+            case "readings":
 
-        switch (textMessage[1]) {
-            case "water":
-                WaterService service = new WaterServiceImp();
-                List<WaterPerDay> list = WorkWithDB.findAllWater();
-//                List<WaterPerDay> list = service.findAll()
+//                List<WaterPerDay> list = WorkWithDB.findAllWater();
+                List<Water> waters = service.findAll();
                 int resultHot = baseHot;
                 int resultCold = baseCold;
-                for (WaterPerDay x : list){
-                    resultHot += x.getHotWaterTotal();
-                    resultCold += x.getColdWaterTotal();
+                for (Water x : waters) {
+                    for (WaterReading reading : x.getWaterReadings()) {
+                        if (reading.isHot()) resultHot += reading.sumAll();
+                        else resultCold += reading.sumAll();
+                    }
                 }
                 builder.append("Показание горячей воды: \uD83D\uDD25");
                 builder.append(resultHot/100).append(",").append(resultHot%100*10);
@@ -61,7 +68,6 @@ class StatusController {
                 builder.append("Показание холодной воды: \u2744");
                 builder.append(resultCold/100).append(",").append(resultCold%100*10);
                 builder.append(" m\u00B3");
-
 
                 responseText = builder.toString();
                 responseKeyboard = getCategoryMarkup();
@@ -74,7 +80,7 @@ class StatusController {
                 Bot.setPrefix("/home water cold ");
                 responseText = "Введите показание холодной воды";
                 try {
-                    baseHot = Integer.parseInt(textMessage[2]) / 10;
+                    baseHot = Integer.parseInt(textMessage[3]) / 10;
                 } catch (NumberFormatException e) {
                     responseText = "Введите число";
                 }
@@ -84,16 +90,16 @@ class StatusController {
                 responseText = "Данные сохранены";
                 responseKeyboard = getCategoryMarkup();
                 try {
-                    baseCold = Integer.parseInt(textMessage[2]) / 10;
+                    baseCold = Integer.parseInt(textMessage[3]) / 10;
                 } catch (NumberFormatException e) {
                     responseText = "Введите число";
                 }
                 break;
             case "graph":
-                List<WaterPerDay> waterPerDayListForYears = WorkWithDB.findAllWater();
+                List<Water> waterYears = service.findAll();
                 List<Integer> yearsList = new ArrayList<>();
                 int year = 0;
-                for (WaterPerDay x : waterPerDayListForYears){
+                for (Water x : waterYears){
                     if (year != x.getYear()){
                         year = x.getYear();
                         yearsList.add(x.getYear());
@@ -104,26 +110,24 @@ class StatusController {
                 break;
             case "year":
 
-                List<WaterPerDay> waterPerDayListForMonths = WorkWithDB.findAllWater();
+                List<Water> waterMonth = service.findAll();
                 List<Integer> monthList = new ArrayList<>();
                 int month = 0;
-                for (WaterPerDay x : waterPerDayListForMonths){
-                    if (month != x.getYearWithMonth() && x.getYearWithMonth() / 100 == Integer.parseInt(textMessage[2])){
+                for (Water x : waterMonth){
+                    if (month != x.getYearWithMonth() && x.getYearWithMonth() / 100 == Integer.parseInt(textMessage[3])){
                         month = x.getYearWithMonth();
                         monthList.add(x.getYearWithMonth());
-
                     }
                 }
                 responseText = "Выберите месяц";
                 responseKeyboard = getTimeKeyboard(monthList, "month");
-
                 break;
             case "month":
-                List<WaterPerDay> waterPerDayListForDay = WorkWithDB.findAllWater();
+                List<Water> waterDays = service.findAll();
                 List<Integer> dayList = new ArrayList<>();
                 int day = 0;
-                for (WaterPerDay x : waterPerDayListForDay){
-                    if (day != x.getDay() && x.getDay() / 100 == Integer.parseInt(textMessage[2])){
+                for (Water x : waterDays){
+                    if (day != x.getDay() && x.getDay() / 100 == Integer.parseInt(textMessage[3])){
                         day = x.getDay();
                         dayList.add(x.getDay());
                     }
@@ -134,13 +138,27 @@ class StatusController {
                 break;
             case "day":
 
-                int date = Integer.parseInt(textMessage[2]);
-                WaterPerDay water = WorkWithDB.getWaterByDate(date);
-                int[] neighboringDays = WorkWithDB.getWaterByDatePreviousAndNext(date);
+//                WaterPerDay water = WorkWithDB.getWaterByDate(date);
+//                Water water = service.
+//                int[] neighboringDays = WorkWithDB.getWaterByDatePreviousAndNext(date);
+//                boolean isAm = true;
+//                if (textMessage.length > 3) isAm = false;
+
+                int date = Integer.parseInt(textMessage[3]);
+                System.out.println(date);
+                Water water = service.getWaterByDate(date);
+                System.out.println(water.getId());
+                int[] neighboringDays = service.getWaterByDatePreviousAndNext(date);
                 boolean isAm = true;
-                if (textMessage.length > 3) isAm = false;
+                if (textMessage.length > 4) isAm = false;
+                List<WaterReading> waterReadings = water.getWaterReadings();
 
+                for (WaterReading x : waterReadings){
+                    System.out.println("x.isHot() = " + x.isHot());
+                    System.out.println("x.isMorning() = " + x.isMorning());
+                }
 
+//
                 StringBuilder dayBuilder = new StringBuilder();
                 dayBuilder.append("Показания на ").append(date % 100).append(" ");
                 dayBuilder.append(dateIntToString(date / 100 % 100, false)).append(" ").append(date / 10000 + 2000);
@@ -148,23 +166,47 @@ class StatusController {
                 if (isAm) dayBuilder.append(" первой");
                 else  dayBuilder.append(" второй");
                 dayBuilder.append(" половины дня по часам:\n\n");
-                dayBuilder.append(DirtyJob.ListGraph(water.getHotWater(), isAm));
+                dayBuilder.append(DirtyJob.ListGraph(water.getWaterReadings(),true, isAm));
                 dayBuilder.append("\n\n");
                 dayBuilder.append("Холодной воды");
                 if (isAm) dayBuilder.append(" первой");
                 else  dayBuilder.append(" второй");
                 dayBuilder.append(" половины дня по часам:\n\n");
-                dayBuilder.append(DirtyJob.ListGraph(water.getColdWater(), isAm));
-
-
-
+                dayBuilder.append(DirtyJob.ListGraph(water.getWaterReadings(),false, isAm));
+//
+//
+//
                 responseText = dayBuilder.toString();
-                responseKeyboard = getGraphMarkup(neighboringDays, date, isAm);
+//                responseText = "День";
+//                responseKeyboard = getGraphMarkup(neighboringDays, date, isAm);
                 break;
             default:
-                responseText = "Выберите категорию";
-                responseKeyboard = getCategoryMarkup();
+                String text = "";
+                for (String x : textMessage)
+                    text += x + " ";
+                System.out.println(text);
+                responseText = text;
         }
+    }
+
+    private InlineKeyboardMarkup getCategoryMarkup() {
+
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("Показания воды")
+                .setCallbackData("/home water readings"));
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("График потребления")
+                .setCallbackData("/home water graph"));
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        keyboardButtonsRow2.add(new InlineKeyboardButton().setText("Установить начальное значение")
+                .setCallbackData("/home water set"));
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+        rowList.add(keyboardButtonsRow2);
+        markup.setKeyboard(rowList);
+
+        return markup;
     }
 
     private InlineKeyboardMarkup getTimeKeyboard(List<Integer> list, String time){
@@ -186,19 +228,19 @@ class StatusController {
             } else text = "" + list.get(i) % 100;
             if (i < 7)
                 keyboardButtonsRow1.add(new InlineKeyboardButton().setText(text)
-                        .setCallbackData("/status " + time + " " + list.get(i)));
+                        .setCallbackData("/home water " + time + " " + list.get(i)));
             if ( i>= 7 && i < 14)
                 keyboardButtonsRow2.add(new InlineKeyboardButton().setText(text)
-                        .setCallbackData("/status " + time + " " + list.get(i)));
+                        .setCallbackData("/home water " + time + " " + list.get(i)));
             if ( i>= 14 && i < 21)
                 keyboardButtonsRow3.add(new InlineKeyboardButton().setText(text)
-                        .setCallbackData("/status " + time + " " + list.get(i)));
+                        .setCallbackData("/home water " + time + " " + list.get(i)));
             if ( i>= 21 && i < 28)
                 keyboardButtonsRow4.add(new InlineKeyboardButton().setText(text)
-                        .setCallbackData("/status " + time + " " + list.get(i)));
+                        .setCallbackData("//home water " + time + " " + list.get(i)));
             if ( i>= 28 && i < 35)
                 keyboardButtonsRow5.add(new InlineKeyboardButton().setText(text)
-                        .setCallbackData("/status " + time + " " + list.get(i)));
+                        .setCallbackData("/home water " + time + " " + list.get(i)));
 
         }
 
@@ -212,56 +254,6 @@ class StatusController {
         markup.setKeyboard(rowList);
 
         return markup;
-    }
-    private InlineKeyboardMarkup getGraphMarkup(int[] neighboringDays, int today, boolean isAm) {
-        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        if (neighboringDays[0] != 0)
-            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[0]))
-                    .setCallbackData("/status day " + neighboringDays[0]));
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText((isAm ? "вторая" : "первая") + " половина дня")
-//                .setCallbackData(callback));
-                .setCallbackData("/status day " + today + (isAm ? " 1" : "")));
-        if (neighboringDays[1] != 0)
-            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[1]))
-                    .setCallbackData("/status day " + neighboringDays[1]));
-
-
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow2.add(new InlineKeyboardButton().setText("На главную")
-                .setCallbackData("/help"));
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-
-        markup.setKeyboard(rowList);
-        return markup;
-    }
-
-    private InlineKeyboardMarkup getCategoryMarkup() {
-
-        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("Показания воды")
-                .setCallbackData("/status water"));
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("График потребления")
-                .setCallbackData("/status graph"));
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow2.add(new InlineKeyboardButton().setText("Установить начальное значение")
-                .setCallbackData("/status set"));
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-        markup.setKeyboard(rowList);
-
-        return markup;
-    }
-
-    private String dateRemake (int date){
-        String month = date /100 % 100 < 10 ? "0" + date /100 % 100 : " " + date / 100 % 100;
-        return date % 100 + "." + month + "." + (date / 10000 + 2000);
     }
 
     private String dateIntToString (int date, boolean isNominative){
@@ -282,15 +274,3 @@ class StatusController {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
