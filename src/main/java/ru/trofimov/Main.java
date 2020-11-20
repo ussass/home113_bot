@@ -2,6 +2,7 @@ package ru.trofimov;
 
 import com.google.inject.internal.cglib.transform.$ClassTransformer;
 import ru.trofimov.Bot.Bot;
+import ru.trofimov.arduino.WaterControl;
 import ru.trofimov.dao.WaterDaoImp;
 import ru.trofimov.model.*;
 import ru.trofimov.service.RecipeService;
@@ -15,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -40,16 +42,16 @@ public class Main {
 
         final JLabel label = new JLabel("Bot is not running         ");
 
-//        WaterControl waterControl = new WaterControl("COM3");
-//        final Thread thread = new Thread(waterControl);
+        WaterControl waterControl = new WaterControl("COM3");
+        final Thread thread = new Thread(waterControl);
 
         startButton.addActionListener(e -> {
-//            thread.start();
-            if (Bot.startBot()) {
-                label.setText("Bot is working               ");
-            } else {
-                label.setText("An error has occurred");
-            }
+            thread.start();
+//            if (Bot.startBot()) {
+//                label.setText("Bot is working               ");
+//            } else {
+//                label.setText("An error has occurred");
+//            }
         });
         startButton.setFocusable(true);
 
@@ -74,6 +76,53 @@ public class Main {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         run();
+
+
+//        List<WaterReading> list = new ArrayList<>();
+//
+//        Random random = new Random(1);
+//
+//        for (int i = 0; i < 4; i++) {
+//            List<Integer> integerList = new ArrayList<>();
+//            for (int j = 0; j < 12; j++) {
+//                integerList.add(random.nextInt(10));
+//            }
+//            WaterReading waterReading = new WaterReading();
+//            waterReading.setValues(integerList);
+//            switch (i){
+//                case 0:
+//                    waterReading.setHot(true);
+//                    waterReading.setMorning(true);
+//                    break;
+//                case 1:
+//                    waterReading.setHot(true);
+//                    waterReading.setMorning(false);
+//                    break;
+//                case 2:
+//                    waterReading.setHot(false);
+//                    waterReading.setMorning(true);
+//                    break;
+//                case 3:
+//                    waterReading.setHot(false);
+//                    waterReading.setMorning(false);
+//                    break;
+//            }
+//            list.add(waterReading);
+//        }
+//
+//
+//
+//        for (int x : list.get(0).getWaterList())
+//            System.out.print(x + " ");
+//
+//        System.out.println();
+//        System.out.println("list.get(0).getH1() = " + list.get(0).getH1());
+//        System.out.println("list.get(0).getH2() = " + list.get(0).getH2());
+//
+//        String graph = DirtyJob.ListGraph(list, true, true);
+//        System.out.println(graph);
+
+
 
 //        WaterService service = new WaterServiceImp();
 //        int[] nums = service.getWaterByDatePreviousAndNext(43);

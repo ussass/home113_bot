@@ -23,7 +23,6 @@ public class WaterReading {
     @JoinColumn(name = "reading_water_id")
     private Water water;
 
-    private int h0;
     private int h1;
     private int h2;
     private int h3;
@@ -35,6 +34,7 @@ public class WaterReading {
     private int h9;
     private int h10;
     private int h11;
+    private int h12;
 
     public WaterReading() {
     }
@@ -43,7 +43,6 @@ public class WaterReading {
         this.isHot = isHot;
         this.isMorning = isMorning;
         this.water = water;
-        this.h0 = 0;
         this.h1 = 0;
         this.h2 = 0;
         this.h3 = 0;
@@ -55,6 +54,7 @@ public class WaterReading {
         this.h9 = 0;
         this.h10 = 0;
         this.h11 = 0;
+        this.h12 = 0;
     }
 
     public int getId() {
@@ -87,14 +87,6 @@ public class WaterReading {
 
     public void setWater(Water water) {
         this.water = water;
-    }
-
-    public int getH0() {
-        return h0;
-    }
-
-    public void setH0(int h0) {
-        this.h0 = h0;
     }
 
     public int getH1() {
@@ -185,13 +177,20 @@ public class WaterReading {
         this.h11 = h11;
     }
 
+    public int getH12() {
+        return h12;
+    }
+
+    public void setH12(int h12) {
+        this.h12 = h12;
+    }
+
     public int sumAll(){
-        return h0 + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11;
+        return h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12;
     }
 
     public List<Integer> getWaterList(){
         List<Integer> list = new ArrayList<>(12);
-        list.add(h0);
         list.add(h1);
         list.add(h2);
         list.add(h3);
@@ -203,7 +202,23 @@ public class WaterReading {
         list.add(h9);
         list.add(h10);
         list.add(h11);
+        list.add(h12);
         return list;
+    }
+
+    public void setValues(List<Integer> list){
+        this.h1 = list.get(0);
+        this.h2 = list.get(1);
+        this.h3 = list.get(2);
+        this.h4 = list.get(3);
+        this.h5 = list.get(4);
+        this.h6 = list.get(5);
+        this.h7 = list.get(6);
+        this.h8 = list.get(7);
+        this.h9 = list.get(8);
+        this.h10 = list.get(9);
+        this.h11 = list.get(10);
+        this.h12 = list.get(11);
     }
 
 }

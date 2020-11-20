@@ -18,4 +18,6 @@ public interface WaterService {
     Water getWaterByDate(int date);
 
     int[] getWaterByDatePreviousAndNext(int date);
+
+    int getLastDate();
 }

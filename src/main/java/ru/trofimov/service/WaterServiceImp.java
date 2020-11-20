@@ -62,4 +62,14 @@ public class WaterServiceImp implements WaterService{
         }
         return result;
     }
+
+    @Override
+    public int getLastDate() {
+        List<Water> list = dao.findAll();
+        int lastDay = 0;
+        for (Water water : list) {
+            if (water.getDate() > lastDay) lastDay = water.getDate();
+        }
+        return lastDay;
+    }
 }

@@ -75,4 +75,18 @@ public class Water {
     public int getDay(){
         return date;
     }
+
+    public void setValue(int hour, int hotWater, int coldWater){
+
+        for (int i = 0; i < waterReadings.size(); i++) {
+//            if (hour <= 12){
+//
+//            }
+            switch (hour){
+                case 1:
+//                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) waterReadings.set(i, )
+            }
+
+        }
+    }
 }

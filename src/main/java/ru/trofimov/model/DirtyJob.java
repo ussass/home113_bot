@@ -13,8 +13,10 @@ public class DirtyJob {
         for (Integer integer : list) {
             if (maxValue < integer) maxValue = integer;
         }
-        String empty = "\u25FD";
-        String full = "\u25FE";
+//        String empty = "\u25FD";
+//        String full = "\u25FE";
+        String empty = "";
+        String full = "#";
 
 
         for (int i = maxValue; i > 0; i--){
@@ -54,8 +56,8 @@ public class DirtyJob {
             }
         }
 
-        list.add(list.get(0));
-        list.remove(0);
+//        list.add(list.get(0));
+//        list.remove(0);
         StringBuilder builder = new StringBuilder();
         int maxValue = 0;
         for (Integer integer : list) {
@@ -63,6 +65,14 @@ public class DirtyJob {
         }
         String empty = "\u25FD";
         String full = "\u25FE";
+//        String empty = ".";
+//        String full = "#";
+
+        System.out.println("maxValue = " + maxValue);
+
+        for (int x : list)
+            System.out.print(x + " ");
+        System.out.println();
 
         for (int i = maxValue; i > 0; i--){
             if (i > 9) {
@@ -72,8 +82,8 @@ public class DirtyJob {
             }
             builder.append(" ");
 
-            for (int j = 1; j < list.size(); j++){
-                if (list.get(j) >= i) builder.append(full);
+            for (Integer integer : list) {
+                if (integer >= i) builder.append(full);
                 else builder.append(empty);
             }
             builder.append("\n");

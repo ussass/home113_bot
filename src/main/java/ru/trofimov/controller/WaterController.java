@@ -178,7 +178,7 @@ public class WaterController implements SecondController {
 //
                 responseText = dayBuilder.toString();
 //                responseText = "День";
-//                responseKeyboard = getGraphMarkup(neighboringDays, date, isAm);
+                responseKeyboard = getGraphMarkup(neighboringDays, date, isAm);
                 break;
             default:
                 String text = "";
@@ -207,6 +207,37 @@ public class WaterController implements SecondController {
         markup.setKeyboard(rowList);
 
         return markup;
+    }
+
+    private InlineKeyboardMarkup getGraphMarkup(int[] neighboringDays, int today, boolean isAm) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        if (neighboringDays[0] != 0)
+            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[0]))
+                    .setCallbackData("/home water day " + neighboringDays[0]));
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText((isAm ? "вторая" : "первая") + " половина дня")
+//                .setCallbackData(callback));
+                .setCallbackData("/home water day " + today + (isAm ? " 1" : "")));
+        if (neighboringDays[1] != 0)
+            keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[1]))
+                    .setCallbackData("/home water day " + neighboringDays[1]));
+
+
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        keyboardButtonsRow2.add(new InlineKeyboardButton().setText("На главную")
+                .setCallbackData("/help"));
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+        rowList.add(keyboardButtonsRow2);
+
+        markup.setKeyboard(rowList);
+        return markup;
+    }
+
+    private String dateRemake (int date){
+        String month = date /100 % 100 < 10 ? "0" + date /100 % 100 : " " + date / 100 % 100;
+        return date % 100 + "." + month + "." + (date / 10000 + 2000);
     }
 
     private InlineKeyboardMarkup getTimeKeyboard(List<Integer> list, String time){
