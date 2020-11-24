@@ -1,9 +1,11 @@
-package ru.trofimov.model;
+package ru.trofimov.utils;
+
+import ru.trofimov.model.WaterReading;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirtyJob {
+public class Utils {
     public static String ListGraph(List<Integer> list, boolean isAm) {
         int start = isAm ? 1: 13;
         list.add(list.get(0));

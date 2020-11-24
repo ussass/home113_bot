@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table (name = "water")
-public class Water {
+@Table(name = "water")
+public class    Water {
 
     @Id
     @Column(name = "water_id")
@@ -60,31 +60,314 @@ public class Water {
         this.waterReadings = waterReadings;
     }
 
-    public int getYear(){
+    public int getYear() {
         return date / 10000;
     }
 
-    public int getMonth(){
+    public int getMonth() {
         return date / 100 % 100;
     }
 
-    public int getYearWithMonth(){
+    public int getYearWithMonth() {
         return date / 100;
     }
 
-    public int getDay(){
+    public int getDay() {
         return date;
     }
 
-    public void setValue(int hour, int hotWater, int coldWater){
+    public void setValue(int hour, int hotWater, int coldWater) {
 
         for (int i = 0; i < waterReadings.size(); i++) {
-//            if (hour <= 12){
-//
-//            }
-            switch (hour){
+            switch (hour) {
                 case 1:
-//                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) waterReadings.set(i, )
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH1(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH1(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 2:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH2(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH2(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 3:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH3(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH3(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 4:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH4(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH4(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 5:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH5(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH5(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 6:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH6(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH6(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 7:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH7(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH7(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 8:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH8(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH8(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 9:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH9(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH9(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 10:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH10(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH10(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 11:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH11(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH11(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 12:
+                    if (waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH12(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH12(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 13:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH1(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH1(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 14:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH2(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH2(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 15:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH3(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH3(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 16:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH4(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH4(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 17:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH5(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH5(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 18:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH6(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH6(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 19:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH7(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH7(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 20:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH8(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH8(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 21:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH9(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH9(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 22:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH10(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH10(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 23:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH11(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH11(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
+                case 24:
+                    if (!waterReadings.get(i).isMorning() && waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH12(hotWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    if (!waterReadings.get(i).isMorning() && !waterReadings.get(i).isHot()) {
+                        WaterReading waterReading = waterReadings.get(i);
+                        waterReading.setH12(coldWater);
+                        waterReadings.set(i, waterReading);
+                    }
+                    break;
             }
 
         }

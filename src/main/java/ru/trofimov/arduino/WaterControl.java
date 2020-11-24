@@ -3,7 +3,6 @@ package ru.trofimov.arduino;
 import arduino.Arduino;
 import ru.trofimov.model.Water;
 import ru.trofimov.model.WaterReading;
-import ru.trofimov.model.WorkWithDB;
 import ru.trofimov.service.WaterService;
 import ru.trofimov.service.WaterServiceImp;
 
@@ -32,7 +31,7 @@ public class WaterControl implements Runnable {
 //        String waterResult = arduino.serialRead();
 
         Random random = new Random();
-        String waterResult = random.nextInt(10) + "\n" + random.nextInt(10);
+        String waterResult = (random.nextInt(10) + 1) + "\n" + (random.nextInt(10) + 1);
 
         hotWater = Integer.parseInt(waterResult.split("\n")[0]);
         coldWater = Integer.parseInt(waterResult.split("\n")[1]);
@@ -45,12 +44,9 @@ public class WaterControl implements Runnable {
         int hour = -1;
         int myDate;
         WaterService service = new WaterServiceImp();
-//        boolean isTodayAdded  = false;
         while (true) {
             Date date = new Date();
             if (date.getHours() != hour) {
-//                if (date.getDate() == myDate % 100)
-//                    isTodayAdded = false;
                 myDate = date.getYear() % 100;
                 myDate = myDate * 100 + date.getMonth() + 1;
                 myDate = myDate * 100 + date.getDate();
@@ -58,21 +54,23 @@ public class WaterControl implements Runnable {
                 toReadMeter();
                 int lastDay = service.getLastDate();
 
+                Water water;
+
                 if (lastDay != myDate) {
-                    Water water = new Water(myDate);
+                    water = new Water(myDate);
                     water.addReading(new WaterReading(true, true, water));
                     water.addReading(new WaterReading(true, false, water));
                     water.addReading(new WaterReading(false, true, water));
                     water.addReading(new WaterReading(false, false, water));
 
+                    water.setValue(hour, hotWater, coldWater);
 
+                    service.save(water);
+                } else {
+                    water = service.getWaterByDate(myDate);
 
-
-                    System.out.println("water.getWaterReadings().size() = " + water.getWaterReadings().size());
-                    System.out.println("myDate = " + myDate);
-                    System.out.println("lastDay = " + lastDay);
-//                } else {
-//                    WorkWithDB.updateWater(lastDay, hotWater, coldWater, date.getHours());
+                    water.setValue(hour, hotWater, coldWater);
+                    service.merge(water);
                 }
                 System.out.println("Добавленно в час: " + hour);
             }

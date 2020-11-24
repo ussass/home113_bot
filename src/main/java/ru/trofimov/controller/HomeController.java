@@ -2,8 +2,6 @@ package ru.trofimov.controller;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import ru.trofimov.arduino.WaterPerDay;
-import ru.trofimov.model.WorkWithDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,6 @@ public class HomeController implements SecondController{
             return;
         }
 
-
         switch (textMessage[1]) {
             case "water":
                 SecondController waterController = new WaterController(textMessage);
@@ -45,7 +42,6 @@ public class HomeController implements SecondController{
                 break;
             default:
                 responseText = "Такой команды нету!";
-
         }
     }
 

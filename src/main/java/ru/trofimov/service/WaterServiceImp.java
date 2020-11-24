@@ -23,8 +23,8 @@ public class WaterServiceImp implements WaterService{
     }
 
     @Override
-    public void update(Water water) {
-        dao.update(water);
+    public void merge(Water water) {
+        dao.merge(water);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.trofimov.model;
+package ru.trofimov.utils;
 
 import ru.trofimov.model.Recipe;
 

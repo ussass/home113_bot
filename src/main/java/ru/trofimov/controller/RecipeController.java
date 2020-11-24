@@ -2,7 +2,7 @@ package ru.trofimov.controller;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import ru.trofimov.model.PreparationOfTheRecipe;
+import ru.trofimov.utils.PreparationOfTheRecipe;
 import ru.trofimov.model.Recipe;
 import ru.trofimov.service.RecipeService;
 import ru.trofimov.service.RecipeServiceImp;
@@ -39,18 +39,13 @@ class RecipeController {
 
         StringBuilder stringBuilder = new StringBuilder();
         List<String> callbackData = new ArrayList<>();
-//        for (String x : textMessage)
-//            System.out.print(x + " ");
-//        System.out.println();
         RecipeService service = new RecipeServiceImp();
 
         switch (textMessage[1]) {
             case "category":
                 stringBuilder.append("Доступны следующие рецепты:\n\n");
 
-//                List<Recipe> list = WorkWithDB.findAll(Integer.parseInt(textMessage[2]));
                 List<Recipe> list = service.findAll(Integer.parseInt(textMessage[2]));
-
 
                 int count = textMessage.length == 4 ? Integer.parseInt(textMessage[3]) : 0;
 
@@ -117,7 +112,6 @@ class RecipeController {
         rowList.add(keyboardButtonsRow2);
 
         responseKeyboard.setKeyboard(rowList);
-
     }
 
     private InlineKeyboardMarkup getCategoryMarkup() {

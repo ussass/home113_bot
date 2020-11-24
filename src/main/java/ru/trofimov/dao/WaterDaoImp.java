@@ -30,8 +30,15 @@ public class WaterDaoImp implements WaterDao {
     }
 
     @Override
-    public void update(Water water) {
-
+    public void merge(Water water) {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction tx1 = session.beginTransaction();
+            session.merge(water);
+            tx1.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception: " + e.toString());
+        }
     }
 
     @Override

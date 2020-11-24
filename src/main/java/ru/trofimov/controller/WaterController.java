@@ -4,12 +4,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.trofimov.Bot.Bot;
 import ru.trofimov.arduino.WaterPerDay;
-import ru.trofimov.model.DirtyJob;
 import ru.trofimov.model.Water;
 import ru.trofimov.model.WaterReading;
-import ru.trofimov.model.WorkWithDB;
 import ru.trofimov.service.WaterService;
 import ru.trofimov.service.WaterServiceImp;
+import ru.trofimov.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +50,6 @@ public class WaterController implements SecondController {
 
         switch (textMessage[2]) {
             case "readings":
-
-//                List<WaterPerDay> list = WorkWithDB.findAllWater();
                 List<Water> waters = service.findAll();
                 int resultHot = baseHot;
                 int resultCold = baseCold;
@@ -137,13 +134,6 @@ public class WaterController implements SecondController {
                 responseKeyboard = getTimeKeyboard(dayList, "day");
                 break;
             case "day":
-
-//                WaterPerDay water = WorkWithDB.getWaterByDate(date);
-//                Water water = service.
-//                int[] neighboringDays = WorkWithDB.getWaterByDatePreviousAndNext(date);
-//                boolean isAm = true;
-//                if (textMessage.length > 3) isAm = false;
-
                 int date = Integer.parseInt(textMessage[3]);
                 System.out.println(date);
                 Water water = service.getWaterByDate(date);
@@ -158,7 +148,6 @@ public class WaterController implements SecondController {
                     System.out.println("x.isMorning() = " + x.isMorning());
                 }
 
-//
                 StringBuilder dayBuilder = new StringBuilder();
                 dayBuilder.append("Показания на ").append(date % 100).append(" ");
                 dayBuilder.append(dateIntToString(date / 100 % 100, false)).append(" ").append(date / 10000 + 2000);
@@ -166,18 +155,15 @@ public class WaterController implements SecondController {
                 if (isAm) dayBuilder.append(" первой");
                 else  dayBuilder.append(" второй");
                 dayBuilder.append(" половины дня по часам:\n\n");
-                dayBuilder.append(DirtyJob.ListGraph(water.getWaterReadings(),true, isAm));
+                dayBuilder.append(Utils.ListGraph(water.getWaterReadings(),true, isAm));
                 dayBuilder.append("\n\n");
                 dayBuilder.append("Холодной воды");
                 if (isAm) dayBuilder.append(" первой");
                 else  dayBuilder.append(" второй");
                 dayBuilder.append(" половины дня по часам:\n\n");
-                dayBuilder.append(DirtyJob.ListGraph(water.getWaterReadings(),false, isAm));
-//
-//
-//
+                dayBuilder.append(Utils.ListGraph(water.getWaterReadings(),false, isAm));
+
                 responseText = dayBuilder.toString();
-//                responseText = "День";
                 responseKeyboard = getGraphMarkup(neighboringDays, date, isAm);
                 break;
             default:
@@ -216,7 +202,6 @@ public class WaterController implements SecondController {
             keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[0]))
                     .setCallbackData("/home water day " + neighboringDays[0]));
         keyboardButtonsRow1.add(new InlineKeyboardButton().setText((isAm ? "вторая" : "первая") + " половина дня")
-//                .setCallbackData(callback));
                 .setCallbackData("/home water day " + today + (isAm ? " 1" : "")));
         if (neighboringDays[1] != 0)
             keyboardButtonsRow1.add(new InlineKeyboardButton().setText(dateRemake(neighboringDays[1]))

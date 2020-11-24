@@ -14,6 +14,7 @@ public class Bot extends TelegramLongPollingBot {
 
     private boolean isAnswerPrepared = false;
     private static String prefix = "";
+    private static LoopBot loopBot;
 
     public static void setPrefix(String prefix) {
         Bot.prefix = prefix;
@@ -24,6 +25,7 @@ public class Bot extends TelegramLongPollingBot {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
             telegramBotsApi.registerBot(new Bot());
+            loopBot = new LoopBot();
             return true;
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
@@ -32,9 +34,20 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public void onUpdateReceived(Update update) {
+        if (update.hasMessage()){
+            System.out.println("update.getMessage().getText() = " + update.getMessage().getText());
+            if (update.getMessage().getText().equals("stop")) {
+                LoopBot.setLoop(false);
+                return;
+            }
+        }
+
+        LoopBot.setLoop(false);
+        LoopBot.setUpdateLoop(update);
+        Thread thread = new Thread(loopBot);
+        thread.start();
 
         Controller controller = new ControllerImpl();
-
         if (update.hasMessage()) {
             if (update.getMessage().hasText()) {
                 controller.setChatId(update.getMessage().getChatId());
@@ -46,6 +59,8 @@ public class Bot extends TelegramLongPollingBot {
             controller.setTextMessage(update.getCallbackQuery().getData());
             isAnswerPrepared = true;
         }
+
+        LoopBot.setLoop(true);
 
         if (isAnswerPrepared) {
             try {

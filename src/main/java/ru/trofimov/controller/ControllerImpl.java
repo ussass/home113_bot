@@ -3,6 +3,8 @@ package ru.trofimov.controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import ru.trofimov.Bot.Bot;
+import ru.trofimov.Bot.LoopBot;
 import ru.trofimov.keyboard.MyInlineKeyboard;
 
 import java.util.ArrayList;
@@ -28,6 +30,10 @@ public class ControllerImpl implements Controller {
     public SendMessage getSendMessage() {
         if (textMessage.equals("/keyboard")) return getCustomKeyBord(chatId);
 
+        System.out.println(textMessage);
+
+//        if (textMessage.equals("stop")) Bot.setLoop(false);
+
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
 
@@ -43,10 +49,14 @@ public class ControllerImpl implements Controller {
                 sendMessage.setReplyMarkup(homeController.getResponseKeyboard());
                 break;
             default:
+//                if (LoopBot.startBot()) {
+//                    System.out.println("runing");
+//                } else {
+//                    System.out.println("error");
+//                }
                 sendMessage.setText(sendText());
                 sendMessage.setReplyMarkup(MyInlineKeyboard.simpleButton());
         }
-
 
         Date date = new Date();
 
@@ -90,32 +100,17 @@ public class ControllerImpl implements Controller {
     }
 
     private static SendMessage getCustomKeyBord(long chatId){
-        SendMessage message = new SendMessage() // Create a message object object
+        SendMessage message = new SendMessage()
                 .setChatId(chatId)
                 .setText("Here is your keyboard");
-        // Create ReplyKeyboardMarkup object
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        // Create the keyboard (list of keyboard rows)
         List<KeyboardRow> keyboard = new ArrayList<>();
-        // Create a keyboard row
         KeyboardRow row = new KeyboardRow();
-        // Set each button, you can also use KeyboardButton objects if you need something else than text
         row.add("Hello");
         row.add("/start");
         row.add("/help");
-        // Add the first row to the keyboard
         keyboard.add(row);
-        // Create another keyboard row
-//        row = new KeyboardRow();
-//        // Set each button for the second line
-//        row.add("Row 2 Button 1");
-//        row.add("Row 2 Button 2");
-//        row.add("Row 2 Button 3");
-//        // Add the second row to the keyboard
-//        keyboard.add(row);
-        // Set the keyboard to the markup
         keyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
         message.setReplyMarkup(keyboardMarkup);
         return message;
     }

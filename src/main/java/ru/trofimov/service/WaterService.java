@@ -9,7 +9,7 @@ public interface WaterService {
 
     void save(Water water);
 
-    void update(Water water);
+    void merge(Water water);
 
     void delete(Water water);
 

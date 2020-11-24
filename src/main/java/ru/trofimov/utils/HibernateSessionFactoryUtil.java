@@ -7,8 +7,6 @@ import ru.trofimov.model.Recipe;
 import ru.trofimov.model.Water;
 import ru.trofimov.model.WaterReading;
 
-import javax.persistence.criteria.CriteriaQuery;
-
 public class HibernateSessionFactoryUtil {
 
     private static SessionFactory sessionFactory;
