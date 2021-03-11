@@ -1,0 +1,42 @@
+#define HOT 10
+#define COLD 11
+int hotWater = 0;
+int coldWater = 0;
+int hotFlag = 1;
+int coldFlag = 1;
+unsigned long lastTime;
+String waterResult1 = "";
+String waterResult2 = "";
+
+void setup() {
+  Serial.begin(9600);  
+  pinMode(HOT, INPUT_PULLUP);
+  pinMode(COLD, INPUT_PULLUP);
+}
+void loop() {
+  
+  if ((digitalRead(HOT) == LOW)&&(hotFlag == 1))
+  { 
+    hotWater ++;
+  }
+  hotFlag = digitalRead(HOT); 
+
+  if ((digitalRead(COLD) == LOW)&&(coldFlag == 1))
+  { 
+    coldWater ++;
+  }
+  coldFlag = digitalRead(COLD);   
+
+  if (Serial.available() != 0) {
+    byte b = Serial.read();
+    if (b == 49) {
+      Serial.print(hotWater); 
+      Serial.print(" "); 
+      Serial.println(coldWater);
+      hotWater = 0;
+      coldWater = 0;
+    }    
+  }
+  
+  delay(10);
+}
